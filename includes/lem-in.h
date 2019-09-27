@@ -6,14 +6,25 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:57:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/25 18:05:12 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:18:47 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEM-IN_H
-# define LEM-IN_H
+#ifndef LEM_IN_H
+# define LEM_IN_H
 
-# include "limits.h"
+
+
+# include <stdio.h>
+
+
+
+# include <limits.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include "libft.h"
+# include "get_next_line.h"
+# include "b_printf.h"
 
 /*
 **	nbAnts is the number of ants to bring from the start to the end point.
@@ -87,6 +98,7 @@ typedef					struct s_path
 # define ENT_DATA		((t_keyvalue*)(ent->data))
 # define ENT_NB(i)		(&((dict->entrees)[i]))
 
+# define FD				0
 
 /*
 **	Initialization functions
@@ -102,20 +114,23 @@ int		pre_test_input_file(void);
 int		check_contains_just_digits(char *line);
 int		check_is_a_positive_int(char *line);
 
+int		read_input(t_global *gl);
+
 void	read_ants_number_error_management(t_global *gl, int fd);
 void	read_ants_number(t_global *gl, int fd);
 
 int		check_valid_room(char **words);
 int		add_room_to_list(t_global *gl, char *line, int roomType);
-void	start_line_flag_management(t_global *gl. int fd, char *line, \
+void	start_line_flag_management(t_global *gl, int fd, char *line, \
 									int *flagStart);
-void	end_line_flag_management(t_global *gl. int fd, char *line, \
+void	end_line_flag_management(t_global *gl, int fd, char *line, \
 									int *flagEnd);
 char	*read_room_info(t_global *gl, int fd, int flagStart, int flagEnd);
 
 void	read_room_info_error_management(t_global *gl, int fd, char *line, \
 											int errorNb);
 int		check_all_rooms_have_different_names(t_global *gl);
+int		check_all_rooms_have_different_coordinates(t_global *gl);
 void	check_read_room_info_results(t_global *gl, int fd, char *line);
 
 int		dict_insert(t_dict *dict, char *key, char *value);
@@ -128,9 +143,9 @@ t_entree	*create_new_entree(t_entree **entrees, char *key);
 t_entree	*find_entree(t_entree **entrees, char *key);
 
 int		check_existing_room_name(t_global *gl, char *roomNameToCheck);
-int		check_valid_link(char **words);
+int		check_valid_link(t_global *gl, char **words);
 int		add_link_to_dict(t_global *gl, int fd, char *line);
-int		check_read_link_info_results(t_global *gl, int fd);
+void	check_read_link_info_results(t_global *gl, int fd);
 void	read_link_info(t_global *gl, int fd, char *line);
 
 /*
@@ -152,6 +167,8 @@ void	free_paths(t_path *paths);
 void	free_global(t_global *gl);
 
 void	free_words(char **words);
+
+void	print_global(t_global *gl);
 
 char	*ft_strtrim_free(char *str);
 

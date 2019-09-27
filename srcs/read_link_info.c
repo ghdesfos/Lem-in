@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:58:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/25 16:38:17 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:18:43 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		check_existing_room_name(t_global *gl, char *roomNameToCheck)
 **	It also checks that both names are different.
 */
 
-int		check_valid_link(char **words)
+int		check_valid_link(t_global *gl, char **words)
 {
 	if (!words)
 		return (0);
@@ -45,8 +45,8 @@ int		check_valid_link(char **words)
 		return (0);
 	if (words[2])
 		return (0);
-	if (!check_existing_room_name(gl, words[0]))
-			|| !check_existing_room_name(gl, words[1])
+	if (!check_existing_room_name(gl, words[0])
+			|| !check_existing_room_name(gl, words[1]))
 		return (0);
 	if (0 == ft_strcmp(words[0], words[1]))
 		return (0);
@@ -63,16 +63,16 @@ int		add_link_to_dict(t_global *gl, int fd, char *line)
 	char	**words;
 
 	words = ft_strsplit(line, '-');
-	if (!check_valid_link(words))
+	if (!check_valid_link(gl, words))
 	{
-		free_words(words)
+		free_words(words);
 		return (0);
 	}
 	if (-1 == dict_insert(gl->dict, words[0], words[1])
 			|| -1 == dict_insert(gl->dict, words[1], words[0]))
 	{
 		ft_putstr_fd("ERROR\nproblem with the adding of some links \
-						to the dictionary", STDERR_FILENO);
+to the dictionary\n", STDERR_FILENO);
 		free_global(gl);
 		free_words(words);
 		free(line);
@@ -88,13 +88,24 @@ int		add_link_to_dict(t_global *gl, int fd, char *line)
 **	connected to one link.
 */
 
-int		check_read_link_info_results(t_global *gl, int fd)
+void	check_read_link_info_results(t_global *gl, int fd)
 {
 	if (NULL == dict_search(gl->dict, gl->start))
-		return (0);
+	{
+		ft_putstr_fd("ERROR\nthe start room is not connected to at least \
+one room\n", STDERR_FILENO);
+		free_global(gl);
+		close(fd);
+		exit (-5);
+	}
 	if (NULL == dict_search(gl->dict, gl->end))
-		return (0);
-	return (1);
+	{
+		ft_putstr_fd("ERROR\nthe end room is not connected to at least \
+one room\n", STDERR_FILENO);
+		free_global(gl);
+		close(fd);
+		exit (-5);
+	}
 }
 
 /*
@@ -113,7 +124,7 @@ void	read_link_info(t_global *gl, int fd, char *line)
 			return ;
 		if (line[0] != COMMENT_CHAR)
 		{
-			if (!add_link_to_dict(gl, line))
+			if (!add_link_to_dict(gl, fd, line))
 			{
 				free(line);
 				return ;

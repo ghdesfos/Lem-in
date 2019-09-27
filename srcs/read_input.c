@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:53:40 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/25 18:08:08 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:22:27 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@
 int		read_input(t_global *gl)
 {
 	int		fd;
-	int		ret;
 	char	*line;
 
-	fd = STDOUT_FILENO;
+	fd = FD;
 	read_ants_number(gl, fd);
 	line = read_room_info(gl, fd, 0, 0);
 	check_read_room_info_results(gl, fd, line);

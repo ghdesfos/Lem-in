@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 19:58:31 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/25 16:20:53 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:16:18 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ int		dict_insert(t_dict *dict, char *key, char *value)
 
 	if (!dict || !key)
 		return (-1);
-	rk = (unsigned int)hash(key) % SIZE_DICT;
-	if (NULL == (ent = find_entree(ENT_NB(rk))))
+	rk = (unsigned int)hash((unsigned char*)key) % SIZE_DICT;
+	if (NULL == (ent = find_entree(ENT_NB(rk), key)))
+	{
 		if (NULL == (ent = create_new_entree(ENT_NB(rk), key)))
 			return (-1);
+	}
 	if (-1 == add_value_to_entree(ent, value))
 		return (-1);
 	return (0);
@@ -35,8 +37,8 @@ char	**dict_search(t_dict *dict, char *key)
 
 	if (!dict || !key)
 		return (NULL);
-	rk = (unsigned int)hash(key) % dict->capacity;
-	if (NULL == (ent = find_entree(ENT_NB(rk)), key))
+	rk = (unsigned int)hash((unsigned char*)key) % dict->size;
+	if (NULL == (ent = find_entree(ENT_NB(rk), key)))
 		return (NULL);
 	return (ENT_DATA->values);
 }

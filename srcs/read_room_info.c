@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:56:17 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/25 16:38:19 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:25:14 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int		check_valid_room(char **words)
 		return (0);
 	if (!(words[0]) || !(words[1]) || !(words[2]))
 		return (0);
-	if (words[4])
+	if (words[3])
 		return (0);
-	if (words[0] == COMMENT_CHAR || words[0] == SOLUTION_CHAR)
+	if (words[0][0] == COMMENT_CHAR || words[0][0] == SOLUTION_CHAR)
 		return (0);
 	if (0 > check_is_a_positive_int(words[1]))
 		return (0);
@@ -56,9 +56,9 @@ int		add_room_to_list(t_global *gl, char *line, int roomType)
 		return (0);
 	}
 	if (roomType == START_ROOM)
-		gl->start = ft_strdup(line);
+		gl->start = ft_strdup(words[0]);
 	else if (roomType == END_ROOM)
-		gl->end = ft_strdup(line);
+		gl->end = ft_strdup(words[0]);
 	if (!(newRoom = (t_room*)malloc(sizeof(t_room))))
 		return (-1);
 	newRoom->name = ft_strdup(words[0]);
@@ -75,7 +75,7 @@ int		add_room_to_list(t_global *gl, char *line, int roomType)
 **	always been another start or end room defined, hence the error manag.
 */
 
-void	start_line_flag_management(t_global *gl. int fd, char *line, \
+void	start_line_flag_management(t_global *gl, int fd, char *line, \
 									int *flagStart)
 {
 	if (*flagStart == 0)
@@ -84,7 +84,7 @@ void	start_line_flag_management(t_global *gl. int fd, char *line, \
 		read_room_info_error_management(gl, fd, line, START_ROOM);
 }
 
-void	end_line_flag_management(t_global *gl. int fd, char *line, \
+void	end_line_flag_management(t_global *gl, int fd, char *line, \
 									int *flagEnd)
 {
 	if (*flagEnd == 0)
@@ -104,6 +104,8 @@ void	end_line_flag_management(t_global *gl. int fd, char *line, \
 
 char	*read_room_info(t_global *gl, int fd, int flagStart, int flagEnd)
 {
+	char *line;
+
 	while (1 == get_next_line(fd, &line) && (line = ft_strtrim_free(line)))
 	{
 		if (0 == ft_strcmp(line, STR_START))
@@ -121,10 +123,8 @@ char	*read_room_info(t_global *gl, int fd, int flagStart, int flagEnd)
 				return (line);
 		}
 		else if (line[0] != COMMENT_CHAR)
-		{
 			if (!add_room_to_list(gl, line, NORMAL_ROOM))
 				return (line);
-		}
 		free(line);
 	}
 	return (NULL);

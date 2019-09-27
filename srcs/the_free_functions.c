@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:01:22 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/25 09:03:09 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/09/26 19:01:22 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	free_entree(t_entree *ent)
 		while ((ENT_DATA->values)[++i])
 			free((ENT_DATA->values)[i]);
 		free(ENT_DATA->values);
+		free(ent->data);
 	}
 	free(ent);
 }
@@ -70,7 +71,7 @@ void	free_paths(t_path *paths)
 	while (tmp)
 	{
 		next = tmp->next;
-		free_rooms(tmp->tooms);
+		free_rooms(tmp->rooms);
 		free(tmp);
 		tmp = next;
 	}
