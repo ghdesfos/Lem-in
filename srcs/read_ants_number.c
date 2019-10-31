@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:09:02 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/27 11:22:39 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/21 15:14:42 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	read_ants_number(t_global *gl, int fd)
 	char	*line;
 	int		nbAnts;
 
-	while (1 == get_next_line(fd, &line))
+	while (1 == get_next_line(fd, &line)
+			&& add_line_to_struct(gl, line))
 	{
 		if (NULL == (line = ft_strtrim_free(line)))
 			break ;

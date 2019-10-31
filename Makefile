@@ -6,7 +6,7 @@
 #    By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/25 17:57:10 by ghdesfos          #+#    #+#              #
-#    Updated: 2019/09/26 11:49:07 by ghdesfos         ###   ########.fr        #
+#    Updated: 2019/10/30 19:51:49 by ghdesfos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,18 @@ INCLUDES	= -I includes\
 MAIN		= lem-in.c
 DICTIONARY	= dictionary.c\
 				dictionary_sub.c
+QUEUE		= queue.c
+STACK		= stack.c
 READ_INPUT	= read_input.c\
 				read_ants_number.c\
 				read_room_info.c\
 				read_room_info_error_management.c\
 				read_link_info.c
+FIND_PATH	= find_paths.c\
+				find_paths_sub.c\
+				find_paths_sub_sub.c
+DISPATCH	= dispatch_ants_through_paths.c\
+				dispatch_ants_through_paths_sub.c
 DIVERSE		= basic_check_functions.c\
 				the_free_functions.c\
 				the_free_functions_2.c\
@@ -39,7 +46,7 @@ DIVERSE		= basic_check_functions.c\
 				useful_functions.c
 GET_NEXT_L	= get_next_line/get_next_line.c
 
-FUNCTIONS	= $(MAIN) $(DICTIONARY) $(READ_INPUT) $(DIVERSE) $(GET_NEXT_L) $(B_PRINTF)
+FUNCTIONS	= $(MAIN) $(DICTIONARY) $(QUEUE) $(STACK) $(READ_INPUT) $(FIND_PATH) $(DISPATCH) $(DIVERSE) $(GET_NEXT_L) $(B_PRINTF)
 FILES		= $(addprefix srcs/, $(FUNCTIONS))
 OBJECTS		= $(FILES:.o=.c)
 
@@ -64,7 +71,7 @@ gg: $(LIBFT) $(LIBFTPRINTF) $(OBJECTS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB) -g -fsanitize=address
 
 val:
-	valgrind --leak-check=full -v ./lem-in
+	valgrind --leak-check=full -v ./$(NAME)
 
 clean:
 	make clean -C libft

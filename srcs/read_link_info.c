@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:58:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/27 11:18:43 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/27 19:49:45 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,9 @@
 
 int		check_existing_room_name(t_global *gl, char *roomNameToCheck)
 {
-	t_room *tmp;
-
-	tmp = gl->rooms;
-	while (tmp)
-	{
-		if (0 == ft_strcmp(tmp->name, roomNameToCheck))
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
+	if (NULL == dict_search(gl->dict, roomNameToCheck))
+		return (0);
+	return (1);
 }
 
 /*
@@ -65,11 +58,15 @@ int		add_link_to_dict(t_global *gl, int fd, char *line)
 	words = ft_strsplit(line, '-');
 	if (!check_valid_link(gl, words))
 	{
+		ft_putstr_fd("ERROR\nsome links are invalid\n", STDERR_FILENO);
+		free_global(gl);
 		free_words(words);
-		return (0);
+		free(line);
+		close(fd);
+		exit(-4);
 	}
-	if (-1 == dict_insert(gl->dict, words[0], words[1])
-			|| -1 == dict_insert(gl->dict, words[1], words[0]))
+	if (NULL == dict_insert(gl->dict, words[0], words[1])
+			|| NULL == dict_insert(gl->dict, words[1], words[0]))
 	{
 		ft_putstr_fd("ERROR\nproblem with the adding of some links \
 to the dictionary\n", STDERR_FILENO);
@@ -123,15 +120,10 @@ void	read_link_info(t_global *gl, int fd, char *line)
 		if (!(line = ft_strtrim_free(line)))
 			return ;
 		if (line[0] != COMMENT_CHAR)
-		{
-			if (!add_link_to_dict(gl, fd, line))
-			{
-				free(line);
-				return ;
-			}
-		}
+			add_link_to_dict(gl, fd, line);
 		free(line);
 		if (1 != get_next_line(fd, &line))
 			return ;
+		add_line_to_struct(gl, line);
 	}
 }

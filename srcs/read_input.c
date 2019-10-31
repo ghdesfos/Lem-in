@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:53:40 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/27 11:22:27 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/30 16:42:35 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,17 @@
 **	link info, which is why it is pushed to read_link_info().
 */
 
-int		read_input(t_global *gl)
+void	read_input(t_global *gl)
 {
 	int		fd;
 	char	*line;
 
 	fd = FD;
+	line = NULL;
 	read_ants_number(gl, fd);
-	line = read_room_info(gl, fd, 0, 0);
+	read_room_info(gl, fd, &line, (int[2]){0, 0});
 	check_read_room_info_results(gl, fd, line);
 	read_link_info(gl, fd, line);
 	check_read_link_info_results(gl, fd);
-	if (-1 == close(fd))
-		return (-1);
-	return (0);
+	close(fd);
 }

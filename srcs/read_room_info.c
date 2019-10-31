@@ -6,32 +6,28 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:56:17 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/27 11:25:14 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/23 18:38:25 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem-in.h"
 
 /*
-**	We check if the line has 3 "words", the first one is a string that \
-**	does not start with COMMENT_CHAR or SOLUTION_CHAR, and that the second \
-**	and the third one correspond to positive int.
+**	This functions allows to add the room name to the rooms list.
+**	This list is then used for some error management.
 */
 
-int		check_valid_room(char **words)
+int		add_room_to_rooms_list(t_global *gl, char **words)
 {
-	if (!words)
-		return (0);
-	if (!(words[0]) || !(words[1]) || !(words[2]))
-		return (0);
-	if (words[3])
-		return (0);
-	if (words[0][0] == COMMENT_CHAR || words[0][0] == SOLUTION_CHAR)
-		return (0);
-	if (0 > check_is_a_positive_int(words[1]))
-		return (0);
-	if (0 > check_is_a_positive_int(words[2]))
-		return (0);
+	t_room	*newRoom;
+
+	if (!(newRoom = (t_room*)malloc(sizeof(t_room))))
+		return (-1);
+	newRoom->name = ft_strdup(words[0]);
+	newRoom->x = ft_atoi(words[1]);
+	newRoom->y = ft_atoi(words[2]);
+	newRoom->next = gl->rooms;
+	gl->rooms = newRoom;
 	return (1);
 }
 
@@ -40,14 +36,14 @@ int		check_valid_room(char **words)
 **	necessary to construct a room.
 **	The return of ft_strsplit (success of the malloc) is checked inside \
 **	the check_valid_room() function.
-**	If the newRoom malloc fails, the room will simply not be added to \
-**	the room list.
 */
 
-int		add_room_to_list(t_global *gl, char *line, int roomType)
+// should we not quit the program when the room is not added to the dict? indeed we know at this point that we are dealing with a well-fomated room line, so if it is not added to the dictionary, it means there was an unexpected issue...
+
+int		add_room_to_dict(t_global *gl, char *line, int roomType)
 {
-	t_room	*newRoom;
-	char	**words;
+	t_entree	*ent;
+	char		**words;
 
 	words = ft_strsplit(line, ' ');
 	if (!check_valid_room(words))
@@ -55,17 +51,19 @@ int		add_room_to_list(t_global *gl, char *line, int roomType)
 		free_words(words);
 		return (0);
 	}
+	if (NULL == (ent = dict_insert(gl->dict, words[0], NULL))
+		||	-1 == add_room_to_rooms_list(gl, words))
+	{
+		free_words(words);
+		return (-1);
+	}
 	if (roomType == START_ROOM)
 		gl->start = ft_strdup(words[0]);
 	else if (roomType == END_ROOM)
 		gl->end = ft_strdup(words[0]);
-	if (!(newRoom = (t_room*)malloc(sizeof(t_room))))
-		return (-1);
-	newRoom->name = ft_strdup(words[0]);
-	newRoom->x = ft_atoi(words[1]);
-	newRoom->y = ft_atoi(words[2]);
-	newRoom->next = gl->rooms;
-	gl->rooms = newRoom;
+	ENT_DATA->x = ft_atoi(words[1]);
+	ENT_DATA->y = ft_atoi(words[2]);
+	(gl->nbRooms)++;
 	free_words(words);
 	return (1);
 }
@@ -81,7 +79,7 @@ void	start_line_flag_management(t_global *gl, int fd, char *line, \
 	if (*flagStart == 0)
 		(*flagStart)++;
 	else
-		read_room_info_error_management(gl, fd, line, START_ROOM);
+		read_room_info_error_management(gl, fd, line, START_ROOM_ERR);
 }
 
 void	end_line_flag_management(t_global *gl, int fd, char *line, \
@@ -90,42 +88,45 @@ void	end_line_flag_management(t_global *gl, int fd, char *line, \
 	if (*flagEnd == 0)
 		(*flagEnd)++;
 	else
-		read_room_info_error_management(gl, fd, line, END_ROOM);
+		read_room_info_error_management(gl, fd, line, END_ROOM_ERR);
 }
 
 /*
-**	The function below is called with the values 0 for flagStart and flagEnd.
+**	The function below is called with the values 0 for flags[0] (flag start) \
+**	and flags[1] (flag 1).
 **	If we have a comment, we just free the line and move on to next line.
-**	When flagStart == 1 or flagEnd == 1, we do ++, in order to not reinter \
+**	When flag start == 1 or flag end == 1, we do ++, in order to not reinter \
 **	these conditions a second time.
-**	We do return (line) when the line is not a valid room, nor a comment, \
-**	It thus has to be thr first line describing a link between rooms.
+**	When the line is not a valid room, nor a comment, the function returns \
+**	It thus has to be the first line describing a link between rooms.
+**	The value of this first non-room line is stored in char **line.
 */
 
-char	*read_room_info(t_global *gl, int fd, int flagStart, int flagEnd)
+void	read_room_info(t_global *gl, int fd, char **line, int *flags)
 {
-	char *line;
-
-	while (1 == get_next_line(fd, &line) && (line = ft_strtrim_free(line)))
+	while (1 == get_next_line(fd, line) && add_line_to_struct(gl, *line)
+			&& (*line = ft_strtrim_free(*line)))
 	{
-		if (0 == ft_strcmp(line, STR_START))
-			start_line_flag_management(gl, fd, line, &flagStart);
-		else if (0 == ft_strcmp(line, STR_END))
-			end_line_flag_management(gl, fd, line, &flagEnd);
-		else if (flagStart == 1 && line[0] != COMMENT_CHAR)
+		if (0 == ft_strcmp(*line, STR_START))
+			start_line_flag_management(gl, fd, *line, &(flags[0]));
+		else if (0 == ft_strcmp(*line, STR_END))
+			end_line_flag_management(gl, fd, *line, &(flags[1]));
+		else if (flags[0] == 1 && flags[1] == 1)
+			read_room_info_error_management(gl, fd, *line, ST_AND_END_ERR);
+		else if (flags[0] == 1 && (*line)[0] != COMMENT_CHAR)
 		{
-			if (flagStart++ && !add_room_to_list(gl, line, START_ROOM))
-				return (line);
+			if ((flags[0])++ && !add_room_to_dict(gl, *line, START_ROOM))
+				return ;
 		}
-		else if (flagEnd == 1 && line[0] != COMMENT_CHAR)
+		else if (flags[1] == 1 && (*line)[0] != COMMENT_CHAR)
 		{
-			if (flagEnd++ && !add_room_to_list(gl, line, END_ROOM))
-				return (line);
+			if ((flags[1])++ && !add_room_to_dict(gl, *line, END_ROOM))
+				return ;
 		}
-		else if (line[0] != COMMENT_CHAR)
-			if (!add_room_to_list(gl, line, NORMAL_ROOM))
-				return (line);
-		free(line);
+		else if ((*line)[0] != COMMENT_CHAR)
+			if (!add_room_to_dict(gl, *line, NORMAL_ROOM))
+				return ;
+		free(*line);
 	}
-	return (NULL);
+	*line = NULL;
 }

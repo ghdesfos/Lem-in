@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:01:22 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/26 19:01:22 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/30 20:06:29 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,19 @@ void	free_rooms(t_room *rooms)
 	}
 }
 
+/*
+**	We do not free the different element contained inside the ENT_DATA->values.
+**	Indeed, these are entrees of the dict, and they will all be removed during \
+**	the dict freeing process.
+*/
+
 void	free_entree(t_entree *ent)
 {
-	int i;
-
 	if (!ent)
 		return ;
 	if (ENT_DATA)
 	{
 		free(ENT_DATA->key);
-		i = -1;
-		while ((ENT_DATA->values)[++i])
-			free((ENT_DATA->values)[i]);
 		free(ENT_DATA->values);
 		free(ent->data);
 	}
@@ -79,9 +80,10 @@ void	free_paths(t_path *paths)
 
 void	free_global(t_global *gl)
 {
+	free_lines(gl->lines);
 	free(gl->start);
 	free(gl->end);
 	free_rooms(gl->rooms);
-	free_dict(gl->dict);
+//	free_dict(gl->dict);
 	free_paths(gl->paths);
 }

@@ -6,44 +6,48 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 19:58:31 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/27 11:16:18 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:20:57 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem-in.h"
 
-int		dict_insert(t_dict *dict, char *key, char *value)
+t_entree	*dict_insert(t_dict *dict, char *key, char *value)
 {
 	int			rk;
 	t_entree	*ent;
+	t_entree	*valueNode;
 
 	if (!dict || !key)
-		return (-1);
-	rk = (unsigned int)hash((unsigned char*)key) % SIZE_DICT;
-	if (NULL == (ent = find_entree(ENT_NB(rk), key)))
+		return (NULL);
+	if (NULL == (ent = find_entree(dict, key)))
 	{
+		rk = (unsigned int)hash((unsigned char*)key) % dict->size;
 		if (NULL == (ent = create_new_entree(ENT_NB(rk), key)))
-			return (-1);
+			return (NULL);
 	}
-	if (-1 == add_value_to_entree(ent, value))
-		return (-1);
-	return (0);
+	if (value)
+	{
+		if (NULL == (valueNode = dict_search(dict, value)))
+			return (NULL);
+		if (-1 == add_value_to_entree(ent, valueNode))
+			return (NULL);
+	}
+	return (ent);
 }
 
-char	**dict_search(t_dict *dict, char *key)
+t_entree	*dict_search(t_dict *dict, char *key)
 {
-	int			rk;
 	t_entree	*ent;
 
 	if (!dict || !key)
 		return (NULL);
-	rk = (unsigned int)hash((unsigned char*)key) % dict->size;
-	if (NULL == (ent = find_entree(ENT_NB(rk), key)))
+	if (NULL == (ent = find_entree(dict, key)))
 		return (NULL);
-	return (ENT_DATA->values);
+	return (ent);
 }
 
-t_dict	*dict_init(int capacity)
+t_dict		*dict_init(int capacity)
 {
 	t_dict	*dict;
 	int		i;

@@ -6,11 +6,33 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:08:03 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/27 11:10:52 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/21 17:30:04 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem-in.h"
+/*
+**	We check if the line has 3 "words", the first one is a string that \
+**	does not start with COMMENT_CHAR or SOLUTION_CHAR, and that the second \
+**	and the third one correspond to positive int.
+*/
+
+int		check_valid_room(char **words)
+{
+	if (!words)
+		return (0);
+	if (!(words[0]) || !(words[1]) || !(words[2]))
+		return (0);
+	if (words[3])
+		return (0);
+	if (words[0][0] == COMMENT_CHAR || words[0][0] == SOLUTION_CHAR)
+		return (0);
+	if (0 > check_is_a_positive_int(words[1]))
+		return (0);
+	if (0 > check_is_a_positive_int(words[2]))
+		return (0);
+	return (1);
+}
 
 void	read_room_info_error_management(t_global *gl, int fd, char *line, \
 											int errorNb)
@@ -21,6 +43,9 @@ void	read_room_info_error_management(t_global *gl, int fd, char *line, \
 						STDERR_FILENO);
 	else if (errorNb == END_ROOM)
 		ft_putstr_fd("the number of end room flags is superior to one\n", \
+						STDERR_FILENO); 
+	else if (errorNb == ST_AND_END_ERR)
+		ft_putstr_fd("the start and end room flags apply to the same room\n", \
 						STDERR_FILENO);
 	free_global(gl);
 	close(fd);

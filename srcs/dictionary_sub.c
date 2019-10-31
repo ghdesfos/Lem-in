@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 20:00:00 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/26 18:05:44 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:21:12 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,34 +26,35 @@ size_t		hash(unsigned char *input)
 	return (hashVal);
 }
 
-int			add_value_to_entree(t_entree *ent, char *value)
+int			add_value_to_entree(t_entree *ent, t_entree *valueNode)
 {
-	char	**values;
-	char	**newValues;
-	int		len;
-	int		i;
+	t_entree	**values;
+	t_entree	**newValues;
+	int			len;
+	int			i;
 
+	if (!ent || !valueNode)
+		return (-1);
 	values = ENT_DATA->values;
-	len = 0;
-	if (values)
-		while (values[len])
-			len++;
-	if (!(newValues = (char**)malloc(sizeof(char*) * (len + 2))))
+	len = ENT_DATA->nbValues;
+	if (!(newValues = (t_entree**)malloc(sizeof(t_entree*) * (len + 2))))
 		return (-1);
 	i = -1;
 	while (++i < len)
 		newValues[i] = values[i];
-	newValues[len] = ft_strdup(value);
+	newValues[len] = valueNode;
 	newValues[len + 1] = NULL;
 	free(values);
 	ENT_DATA->values = newValues;
-	return (0);
+	ENT_DATA->nbValues += 1;
+	return (1);
 }
 
 t_entree	*create_new_entree(t_entree **entrees, char *key)
 {
 	t_entree 	*ent;
 	void		*data;
+	static int	vertexNb = 0;
 
 	if (!(ent = (t_entree*)malloc(sizeof(t_entree))))
 		return (NULL);
@@ -61,17 +62,23 @@ t_entree	*create_new_entree(t_entree **entrees, char *key)
 		return (NULL);
 	ent->data = data;
 	ENT_DATA->key = ft_strdup(key);
-	ENT_DATA->values = NULL;
+	ENT_DATA->nbValues = 0;
+	if (!(ENT_DATA->values = (t_entree**)malloc(sizeof(t_entree))))
+		return (NULL);
+	(ENT_DATA->values)[0] = NULL;
+	ENT_DATA->vertexNb = vertexNb++;
 	ent->next = *entrees;
 	*entrees = ent;
 	return (ent);
 }
 
-t_entree	*find_entree(t_entree **entrees, char *key)
+t_entree	*find_entree(t_dict *dict, char *key)
 {
-	t_entree *ent;
+	int			rk;
+	t_entree	*ent;
 
-	ent = *entrees;
+	rk = (unsigned int)hash((unsigned char*)key) % dict->size;
+	ent = *(ENT_NB(rk));
 	while (ent)
 	{
 		if (ft_strcmp(ENT_DATA->key, key) == 0)
