@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:03:21 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 18:49:32 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:53:15 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 void	free_words(char **words)
 {

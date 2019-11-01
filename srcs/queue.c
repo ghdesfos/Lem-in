@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 08:42:28 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 17:16:41 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:51:40 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 struct s_queue	*init_queue(void)
 {

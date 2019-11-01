@@ -6,17 +6,17 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 19:58:31 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 18:20:57 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 18:06:11 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 t_entree	*dict_insert(t_dict *dict, char *key, char *value)
 {
 	int			rk;
 	t_entree	*ent;
-	t_entree	*valueNode;
+	t_entree	*value_node;
 
 	if (!dict || !key)
 		return (NULL);
@@ -28,9 +28,9 @@ t_entree	*dict_insert(t_dict *dict, char *key, char *value)
 	}
 	if (value)
 	{
-		if (NULL == (valueNode = dict_search(dict, value)))
+		if (NULL == (value_node = dict_search(dict, value)))
 			return (NULL);
-		if (-1 == add_value_to_entree(ent, valueNode))
+		if (-1 == add_value_to_entree(ent, value_node))
 			return (NULL);
 	}
 	return (ent);
@@ -57,7 +57,8 @@ t_dict		*dict_init(int capacity)
 	if (!(dict = (t_dict*)malloc(sizeof(t_dict))))
 		return (NULL);
 	dict->size = capacity;
-	if (!(dict->entrees = (t_entree**)malloc(sizeof(t_entree*) * (capacity + 1))))
+	if (!(dict->entrees = (t_entree**)malloc(sizeof(t_entree*) \
+												* (capacity + 1))))
 		return (NULL);
 	i = -1;
 	while (++i < capacity + 1)

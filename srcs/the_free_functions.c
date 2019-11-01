@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:01:22 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 17:25:08 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:53:03 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 void	free_rooms(t_room *rooms)
 {

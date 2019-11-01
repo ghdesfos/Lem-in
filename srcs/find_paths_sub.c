@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:16:47 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 15:22:38 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 18:37:33 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 t_path		*create_path_elem(void)
 {
@@ -18,42 +18,37 @@ t_path		*create_path_elem(void)
 
 	if (!(path = (t_path*)malloc(sizeof(t_path))))
 		return (NULL);
-
-	printf("POINTER CREATE PATH %p\n", path);
 	path->rooms = NULL;
 	path->len = 0;
-	path->antsToDispatch = 0;
-	path->dispatchedAnts = 0;
+	path->ants_to_dispatch = 0;
+	path->dispatched_ants = 0;
 	path->next = NULL;
 	return (path);
 }
 
 t_pathelem	*create_pathelem_elem(t_entree *curr, t_entree *prev)
 {
-	t_pathelem	*pathElem;
+	t_pathelem	*pathelem;
 
-	if (!(pathElem = (t_pathelem*)malloc(sizeof(t_pathelem))))
+	if (!(pathelem = (t_pathelem*)malloc(sizeof(t_pathelem))))
 		return (NULL);
-	pathElem->curr = curr;
-
-	printf("POINTER CREATE PATHELEM %p %s\n", pathElem, 
-								((t_keyvalue*)(pathElem->curr->data))->key);
-	pathElem->prev = prev;
-	return (pathElem);
+	pathelem->curr = curr;
+	pathelem->prev = prev;
+	return (pathelem);
 }
 
-void		add_new_path_to_paths_list(t_global *gl, t_path *newPath)
+void		add_new_path_to_paths_list(t_global *gl, t_path *new_path)
 {
 	t_path *path;
 
 	if (NULL == gl->paths)
-		gl->paths = newPath;
+		gl->paths = new_path;
 	else
 	{
 		path = gl->paths;
 		while (path->next)
 			path = path->next;
-		path->next = newPath;
+		path->next = new_path;
 	}
 }
 
@@ -62,22 +57,21 @@ void		add_new_path_to_paths_list(t_global *gl, t_path *newPath)
 **	it would prevent the finding of other pathes.
 */
 
-void	mark_new_path_rooms_as_visited(t_global *gl, t_path *newPath, \
+void		mark_new_path_rooms_as_visited(t_global *gl, t_path *new_path, \
 										int *visited)
 {
 	t_room		*room;
 	t_entree	*ent;
 
-	room = newPath->rooms;
+	room = new_path->rooms;
 	while (room)
 	{
 		if (0 != ft_strcmp(gl->start, room->name)
 				&& 0 != ft_strcmp(gl->end, room->name))
 			if ((ent = dict_search(gl->dict, room->name)))
-				visited[ENT_DATA->vertexNb] = 1;
+				visited[ENT_DATA->vertex_nb] = 1;
 		room = room->next;
 	}
-
 }
 
 /*
@@ -85,22 +79,22 @@ void	mark_new_path_rooms_as_visited(t_global *gl, t_path *newPath, \
 **	the already accepted paths can accept before accepting the new path.
 */
 
-int		check_new_path_fastens_dispatch(t_global *gl, t_path *newPath)
+int			check_new_path_fastens_dispatch(t_global *gl, t_path *new_path)
 {
 	t_path	*path;
-	int		maxNbAnts;
+	int		max_nb_ants;
 
 	if (NULL == gl->paths)
 		return (1);
 	path = gl->paths;
-	maxNbAnts = 0;
+	max_nb_ants = 0;
 	while (path)
 	{
-		maxNbAnts += newPath->len + 1 - path->len;
+		max_nb_ants += new_path->len + 1 - path->len;
 		path = path->next;
 	}
-	if (gl->nbAnts > maxNbAnts)
+	if (gl->nb_ants > max_nb_ants)
 		return (1);
-	free_paths(newPath);
+	free_paths(new_path);
 	return (0);
 }

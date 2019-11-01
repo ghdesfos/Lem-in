@@ -6,11 +6,12 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:08:03 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/21 17:30:04 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 18:13:54 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
+
 /*
 **	We check if the line has 3 "words", the first one is a string that \
 **	does not start with COMMENT_CHAR or SOLUTION_CHAR, and that the second \
@@ -35,16 +36,16 @@ int		check_valid_room(char **words)
 }
 
 void	read_room_info_error_management(t_global *gl, int fd, char *line, \
-											int errorNb)
+											int error_nb)
 {
 	ft_putstr_fd("ERROR\n", STDERR_FILENO);
-	if (errorNb == START_ROOM)
+	if (error_nb == START_ROOM)
 		ft_putstr_fd("the number of start room flags is superior to one\n", \
 						STDERR_FILENO);
-	else if (errorNb == END_ROOM)
+	else if (error_nb == END_ROOM)
 		ft_putstr_fd("the number of end room flags is superior to one\n", \
-						STDERR_FILENO); 
-	else if (errorNb == ST_AND_END_ERR)
+						STDERR_FILENO);
+	else if (error_nb == ST_AND_END_ERR)
 		ft_putstr_fd("the start and end room flags apply to the same room\n", \
 						STDERR_FILENO);
 	free_global(gl);
@@ -93,7 +94,6 @@ int		check_all_rooms_have_different_coordinates(t_global *gl)
 		tmp = tmp->next;
 	}
 	return (1);
-
 }
 
 /*
@@ -111,26 +111,21 @@ void	check_read_room_info_results(t_global *gl, int fd, char *line)
 		free_global(gl);
 		close(fd);
 		free(line);
-		exit (-3);
+		exit(-3);
 	}
-	if (!check_all_rooms_have_different_names(gl))
+	if (!check_all_rooms_have_different_names(gl)
+			|| !check_all_rooms_have_different_coordinates(gl))
 	{
 		ft_putstr_fd("ERROR\n", STDERR_FILENO);
-		ft_putstr_fd("there were 2 rooms with the same name\n", \
+		if (!check_all_rooms_have_different_names(gl))
+			ft_putstr_fd("there were 2 rooms with the same name\n", \
+						STDERR_FILENO);
+		else
+			ft_putstr_fd("there were 2 rooms with the same coordinates\n", \
 						STDERR_FILENO);
 		free_global(gl);
 		close(fd);
 		free(line);
-		exit (-3);
-	}
-	if (!check_all_rooms_have_different_coordinates(gl))
-	{
-		ft_putstr_fd("ERROR\n", STDERR_FILENO);
-		ft_putstr_fd("there were 2 rooms with the same coordinates\n", \
-						STDERR_FILENO);
-		free_global(gl);
-		close(fd);
-		free(line);
-		exit (-3);
+		exit(-3);
 	}
 }

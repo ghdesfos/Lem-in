@@ -6,20 +6,20 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:58:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/27 19:49:45 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 18:05:19 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 /*
 **	To be a valid link, the line has to contain the name of 2 existing rooms \
 **	separated by a '-'.
 */
 
-int		check_existing_room_name(t_global *gl, char *roomNameToCheck)
+int		check_existing_room_name(t_global *gl, char *room_name_to_check)
 {
-	if (NULL == dict_search(gl->dict, roomNameToCheck))
+	if (NULL == dict_search(gl->dict, room_name_to_check))
 		return (0);
 	return (1);
 }
@@ -93,7 +93,7 @@ void	check_read_link_info_results(t_global *gl, int fd)
 one room\n", STDERR_FILENO);
 		free_global(gl);
 		close(fd);
-		exit (-5);
+		exit(-5);
 	}
 	if (NULL == dict_search(gl->dict, gl->end))
 	{
@@ -101,7 +101,7 @@ one room\n", STDERR_FILENO);
 one room\n", STDERR_FILENO);
 		free_global(gl);
 		close(fd);
-		exit (-5);
+		exit(-5);
 	}
 }
 

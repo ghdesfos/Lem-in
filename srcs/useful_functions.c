@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 13:45:25 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 17:16:35 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:53:25 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 char	*ft_strtrim_free(char *str)
 {

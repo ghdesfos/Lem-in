@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:59 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 16:55:40 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 18:36:12 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 void	add_non_visited_neighbors(t_entree *ent, t_queue *queue, \
 									int *new_visited)
@@ -19,13 +19,13 @@ void	add_non_visited_neighbors(t_entree *ent, t_queue *queue, \
 	int			i;
 
 	i = -1;
-	while (++i < ENT_DATA->nbValues)
+	while (++i < ENT_DATA->nb_values)
 	{
-		if (new_visited[ENT_CH_DATA(i)->vertexNb] == 0)
+		if (new_visited[ENT_CH_DATA(i)->vertex_nb] == 0)
 		{
 			new_path_elem = create_pathelem_elem((ENT_DATA->values)[i], ent);
 			enqueue(queue, (void*)new_path_elem);
-			new_visited[ENT_CH_DATA(i)->vertexNb] = 1;
+			new_visited[ENT_CH_DATA(i)->vertex_nb] = 1;
 		}
 	}
 }
@@ -80,13 +80,13 @@ t_path	*find_specific_path(t_global *gl, int *visited, t_entree *start, \
 	t_queue		*queue;
 	t_stack		*stack;
 	t_pathelem	*pathelem;
-	int			new_visited[gl->nbRooms];
+	int			new_visited[gl->nb_rooms];
 	int			i;
 
 	queue = init_queue();
 	stack = init_stack();
 	i = -1;
-	while (++i < gl->nbRooms)
+	while (++i < gl->nb_rooms)
 		new_visited[i] = visited[i];
 	enqueue(queue, (void*)create_pathelem_elem(start, NULL));
 	while (!is_empty_queue(queue))
@@ -109,24 +109,24 @@ void	find_paths(t_global *gl)
 	t_entree	*start;
 	t_entree	*end;
 	t_path		*new_path;
-	int			visited[gl->nbRooms];
+	int			visited[gl->nb_rooms];
 	int			i;
 
 	start = dict_search(gl->dict, gl->start);
 	end = dict_search(gl->dict, gl->end);
 	i = -1;
-	while (++i < gl->nbRooms)
+	while (++i < gl->nb_rooms)
 		visited[i] = 0;
 	while ((new_path = find_specific_path(gl, visited, start, end))
 			&& check_new_path_fastens_dispatch(gl, new_path))
 	{
 		mark_new_path_rooms_as_visited(gl, new_path, visited);
 		add_new_path_to_paths_list(gl, new_path);
-		gl->nbPaths += 1;
-		if (0 == gl->minPathLen || new_path->len < gl->minPathLen)
-			gl->minPathLen = new_path->len;
-		if (new_path->len > gl->maxPathLen)
-			gl->maxPathLen = new_path->len;
+		gl->nb_paths += 1;
+		if (0 == gl->min_path_len || new_path->len < gl->min_path_len)
+			gl->min_path_len = new_path->len;
+		if (new_path->len > gl->max_path_len)
+			gl->max_path_len = new_path->len;
 	}
 	find_paths_error_management(gl);
 }

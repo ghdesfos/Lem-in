@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:11:20 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 16:51:39 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:49:52 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 int		check_contains_just_digits(char *line)
 {

@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 08:48:21 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 16:49:45 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:52:52 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 struct s_stack	*init_stack(void)
 {

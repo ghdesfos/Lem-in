@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:56:17 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 17:24:56 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 18:19:12 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 /*
 **	This functions allows to add the room name to the rooms list.
@@ -61,7 +61,7 @@ int		add_room_to_dict(t_global *gl, char *line, int room_type)
 		gl->end = ft_strdup(words[0]);
 	ENT_DATA->x = ft_atoi(words[1]);
 	ENT_DATA->y = ft_atoi(words[2]);
-	(gl->nbRooms)++;
+	(gl->nb_rooms)++;
 	free_words(words);
 	return (1);
 }

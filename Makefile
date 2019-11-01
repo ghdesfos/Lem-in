@@ -6,7 +6,7 @@
 #    By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/25 17:57:10 by ghdesfos          #+#    #+#              #
-#    Updated: 2019/10/31 15:22:55 by ghdesfos         ###   ########.fr        #
+#    Updated: 2019/10/31 18:13:40 by ghdesfos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ INCLUDES	= -I includes\
 				-I srcs/get_next_line\
 				-I b_printf
 
-MAIN		= lem-in.c
+MAIN		= lem_in.c
 DICTIONARY	= dictionary.c\
 				dictionary_sub.c
 QUEUE		= queue.c

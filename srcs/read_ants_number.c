@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:09:02 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 17:25:56 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:51:52 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 void	read_ants_number_error_management(t_global *gl, int fd)
 {
@@ -49,6 +49,6 @@ void	read_ants_number(t_global *gl, int fd)
 		free(line);
 		read_ants_number_error_management(gl, fd);
 	}
-	gl->nbAnts = nb_ants;
+	gl->nb_ants = nb_ants;
 	free(line);
 }

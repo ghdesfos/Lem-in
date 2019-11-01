@@ -6,11 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 09:44:45 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 16:49:29 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 18:43:10 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 void	print_rooms(t_room *rooms)
 {
@@ -39,9 +39,9 @@ void	print_entrees(t_entree **entrees)
 	{
 		b_printf("Key %s --> ", ENT_DATA->key);
 		i = -1;
-		b_printf("NB VALUES %d ADDRESS %p\n", ENT_DATA->nbValues, \
+		b_printf("NB VALUES %d ADDRESS %p\n", ENT_DATA->nb_values, \
 												ENT_DATA->values);
-		while (++i < ENT_DATA->nbValues)
+		while (++i < ENT_DATA->nb_values)
 		{
 			connected_entree_name = ((t_keyvalue*)(((ENT_DATA->values)[i])\
 														->data))->key;
