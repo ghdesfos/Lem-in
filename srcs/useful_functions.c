@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 13:45:25 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 16:29:30 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:16:35 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 char	*ft_strtrim_free(char *str)
 {
-	char *newStr;
+	char *new_str;
 
 	if (!str)
 		return (NULL);
-	newStr = ft_strtrim(str);
+	new_str = ft_strtrim(str);
 	free(str);
-	return (newStr);
+	return (new_str);
 }
 
 /*
@@ -28,15 +28,15 @@ char	*ft_strtrim_free(char *str)
 **	We store the lines in the reverse order.
 */
 
-int		add_line_to_struct(t_global *gl, char *lineStr)
+int		add_line_to_struct(t_global *gl, char *line_str)
 {
-	t_line *lineNode;
+	t_line *line_node;
 
-	if (!(lineNode = (t_line*)malloc(sizeof(t_line))))
+	if (!(line_node = (t_line*)malloc(sizeof(t_line))))
 		return (-1);
-	lineNode->line = ft_strdup(lineStr);
-	lineNode->next = gl->lines;
-	gl->lines = lineNode;
+	line_node->line = ft_strdup(line_str);
+	line_node->next = gl->lines;
+	gl->lines = line_node;
 	return (1);
 }
 
@@ -53,4 +53,13 @@ void	print_input_file_lines(t_line *lines)
 		return ;
 	print_input_file_lines(lines->next);
 	b_printf("%s\n", lines->line);
+}
+
+void	free_non_empty_stack(t_stack *stack)
+{
+	void *content;
+
+	while ((content = pop_stack(stack)) != NULL)
+		free(content);
+	free(stack);
 }

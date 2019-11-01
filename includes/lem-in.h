@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:57:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 19:53:50 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:26:59 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@
 
 typedef					struct s_global
 {
-	int					nbAnts;
+	int					nb_ants;
 	struct s_line		*lines;
-	int					nbRooms;
+	int					nb_rooms;
 	char				*start;
 	char				*end;
 	struct s_room		*rooms;
 	struct s_dict		*dict;
 	struct s_path		*paths;
-	int					nbPaths;
-	int					minPathLen;
-	int					maxPathLen;
+	int					nb_paths;
+	int					min_path_len;
+	int					max_path_len;
 }						t_global;
 
 /*
@@ -101,7 +101,7 @@ typedef					struct s_keyvalue
 	char				*key;
 	int					x;
 	int					y;
-	int					nbValues;
+	int					nb_values;
 	t_entree			**values;
 	int					vertexNb;
 }						t_keyvalue;
@@ -207,11 +207,11 @@ void	read_ants_number_error_management(t_global *gl, int fd);
 void	read_ants_number(t_global *gl, int fd);
 
 int		add_room_to_rooms_list(t_global *gl, char **words);
-int		add_room_to_dict(t_global *gl, char *line, int roomType);
+int		add_room_to_dict(t_global *gl, char *line, int room_type);
 void	start_line_flag_management(t_global *gl, int fd, char *line, \
-									int *flagStart);
+									int *flag_start);
 void	end_line_flag_management(t_global *gl, int fd, char *line, \
-									int *flagEnd);
+									int *flag_end);
 void	read_room_info(t_global *gl, int fd, char **line, int *flags);
 
 int		check_valid_room(char **words);
@@ -266,7 +266,7 @@ int				is_empty_stack(struct s_stack *stack);
 
 void	add_non_visited_neighbors(t_entree *ent, t_queue *queue, \
 									int *newVisited);
-t_room	*add_room_elem_to_path(t_path *path, t_pathelem *pathElem);
+t_room	*add_room_elem_to_path(t_path *path, t_pathelem *path_elem);
 t_path	*reconstitute_path(t_stack *stack, t_entree *start);
 t_path	*find_specific_path(t_global *gl, int *visited, t_entree *start, \
 							t_entree *end);
@@ -274,27 +274,27 @@ void	find_paths(t_global *gl);
 
 t_path		*create_path_elem(void);
 t_pathelem	*create_pathelem_elem(t_entree *curr, t_entree *prev);
-void	find_paths_error_management(t_global *gl);
+void		add_new_path_to_paths_list(t_global *gl, t_path *newPath);
 void	mark_new_path_rooms_as_visited(t_global *gl, t_path *newPath, \
 									int *visited);
 int		check_new_path_fastens_dispatch(t_global *gl, t_path *newPath);
 
-void	free_non_empty_stack(t_stack *stack);
+void	find_paths_error_management(t_global *gl);
 
 /*
 **	Ants dispactch functions
 */
 
-void	move_ants_forward(t_global *gl, t_dispatch **disTab);
-void	dispatch_new_ants_batch(t_global *gl, int *dispatchedAnts, \
-									t_dispatch **disTab);
-void	print_ants_movement(t_global *gl, t_dispatch **disTab);
+void	move_ants_forward(t_global *gl, t_dispatch **dis_tab, int i);
+void	dispatch_new_ants_batch(t_global *gl, int *dispatched_ants, \
+									t_dispatch **dis_tab);
+void	print_ants_movement(t_global *gl, t_dispatch **dis_tab);
 void	define_ants_number_for_each_path(t_global *gl);
 void	dispatch_ants_through_paths(t_global *gl);
 
-t_dispatch	*create_dispatch_elem(int antNb, t_path *path);
-int		check_all_ants_have_reached_end(t_global *gl, int dispatchedAnts, \
-											t_dispatch **disTab);
+t_dispatch	*create_dispatch_elem(int ant_nb, t_path *path);
+int		check_all_ants_have_reached_end(t_global *gl, int dispatched_ants, \
+											t_dispatch **dis_tab);
 
 /*
 **	Diverse functions
@@ -312,7 +312,8 @@ void	free_lines(t_line *lines);
 void	print_global(t_global *gl);
 
 char	*ft_strtrim_free(char *str);
-int		add_line_to_struct(t_global *gl, char *lineStr);
+int		add_line_to_struct(t_global *gl, char *line_str);
 void	print_input_file_lines(t_line *lines);
+void	free_non_empty_stack(t_stack *stack);
 
 #endif

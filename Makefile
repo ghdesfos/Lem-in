@@ -6,7 +6,7 @@
 #    By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/25 17:57:10 by ghdesfos          #+#    #+#              #
-#    Updated: 2019/10/30 19:51:49 by ghdesfos         ###   ########.fr        #
+#    Updated: 2019/10/31 15:22:55 by ghdesfos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ READ_INPUT	= read_input.c\
 				read_link_info.c
 FIND_PATH	= find_paths.c\
 				find_paths_sub.c\
-				find_paths_sub_sub.c
+				find_paths_error_management.c
 DISPATCH	= dispatch_ants_through_paths.c\
 				dispatch_ants_through_paths_sub.c
 DIVERSE		= basic_check_functions.c\
@@ -86,5 +86,7 @@ fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
+	make re -C libft
+	make re -C b_printf
 
 .PHONY: all clean fclean re

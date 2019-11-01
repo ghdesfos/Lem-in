@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:09:02 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/21 15:14:42 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:25:56 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	read_ants_number_error_management(t_global *gl, int fd)
 void	read_ants_number(t_global *gl, int fd)
 {
 	char	*line;
-	int		nbAnts;
+	int		nb_ants;
 
 	while (1 == get_next_line(fd, &line)
 			&& add_line_to_struct(gl, line))
@@ -44,11 +44,11 @@ void	read_ants_number(t_global *gl, int fd)
 		else
 			break ;
 	}
-	if (1 > (nbAnts = check_is_a_positive_int(line)))
+	if (1 > (nb_ants = check_is_a_positive_int(line)))
 	{
 		free(line);
 		read_ants_number_error_management(gl, fd);
 	}
-	gl->nbAnts = nbAnts;
+	gl->nbAnts = nb_ants;
 	free(line);
 }

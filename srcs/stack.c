@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 08:48:21 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 19:38:27 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 16:49:45 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void			push_stack(struct s_stack *stack, void *content)
 		return ;
 	if (!(new = (struct s_node*)malloc(sizeof(struct s_node))))
 		return ;
-
-	printf("STACK NODE %p\n", new);
 	new->content = content;
 	new->next = stack->top;
 	stack->top = new;

@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 18:17:48 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 18:13:25 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:09:33 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,16 @@
 **	we remove it (second while loop).
 */
 
-void	move_ants_forward(t_global *gl, t_dispatch **disTab)
+void	move_ants_forward(t_global *gl, t_dispatch **dis_tab, int i)
 {
 	t_path		*path;
 	t_dispatch	*tmp;
-	int			i;
 
 	i = 0;
 	path = gl->paths;
 	while (path)
 	{
-		tmp = disTab[i];
+		tmp = dis_tab[i];
 		if (tmp)
 		{
 			while (tmp)
@@ -36,10 +35,10 @@ void	move_ants_forward(t_global *gl, t_dispatch **disTab)
 				tmp->room = tmp->room->next;
 				tmp = tmp->next;
 			}
-			tmp = disTab[i];
+			tmp = dis_tab[i];
 			if (NULL == tmp->room)
 			{
-				disTab[i] = tmp->next;
+				dis_tab[i] = tmp->next;
 				free(tmp);
 			}
 		}
@@ -53,8 +52,8 @@ void	move_ants_forward(t_global *gl, t_dispatch **disTab)
 **	Yet we don't do it if we have already sent enough ants on this path.
 */
 
-void	dispatch_new_ants_batch(t_global *gl, int *dispatchedAnts, \
-									t_dispatch **disTab)
+void	dispatch_new_ants_batch(t_global *gl, int *dispatched_ants, \
+									t_dispatch **dis_tab)
 {
 	t_path		*path;
 	t_dispatch	*tmp;
@@ -64,18 +63,18 @@ void	dispatch_new_ants_batch(t_global *gl, int *dispatchedAnts, \
 	path = gl->paths;
 	while (path)
 	{
-		if (path->dispatchedAnts < path->antsToDispatch)
+		if (path->dispatched_ants < path->antsToDispatch)
 		{
-			path->dispatchedAnts += 1;
-			*dispatchedAnts += 1;
-			tmp = disTab[i];
+			path->dispatched_ants += 1;
+			*dispatched_ants += 1;
+			tmp = dis_tab[i];
 			if (!tmp)
-				disTab[i] = create_dispatch_elem(*dispatchedAnts, path);
+				dis_tab[i] = create_dispatch_elem(*dispatched_ants, path);
 			else
 			{
 				while (tmp->next)
 					tmp = tmp->next;
-				tmp->next = create_dispatch_elem(*dispatchedAnts, path);
+				tmp->next = create_dispatch_elem(*dispatched_ants, path);
 			}
 		}
 		i++;
@@ -83,7 +82,7 @@ void	dispatch_new_ants_batch(t_global *gl, int *dispatchedAnts, \
 	}
 }
 
-void	print_ants_movement(t_global *gl, t_dispatch **disTab)
+void	print_ants_movement(t_global *gl, t_dispatch **dis_tab)
 {
 	t_dispatch	*disp;
 	int			i;
@@ -93,13 +92,15 @@ void	print_ants_movement(t_global *gl, t_dispatch **disTab)
 	i = -1;
 	while (++i < gl->nbPaths)
 	{
-		disp = disTab[i];
+		disp = dis_tab[i];
 		while (disp)
 		{
 			if (flag)
-				b_printf("%c%d-%s", SOLUTION_CHAR, disp->antNb, disp->room->name);
+				b_printf("%c%d-%s", SOLUTION_CHAR, disp->antNb, \
+													disp->room->name);
 			else
-				b_printf(" %c%d-%s", SOLUTION_CHAR, disp->antNb, disp->room->name);
+				b_printf(" %c%d-%s", SOLUTION_CHAR, disp->antNb, \
+													disp->room->name);
 			flag = 0;
 			disp = disp->next;
 		}
@@ -116,23 +117,23 @@ void	print_ants_movement(t_global *gl, t_dispatch **disTab)
 void	define_ants_number_for_each_path(t_global *gl)
 {
 	t_path	*path;
-	int		dispatchedAnts;
+	int		dispatched_ants;
 
-	dispatchedAnts = 0;
+	dispatched_ants = 0;
 	path = gl->paths;
 	while (path)
 	{
 		path->antsToDispatch = gl->maxPathLen - path->len;
-		dispatchedAnts += path->antsToDispatch;
+		dispatched_ants += path->antsToDispatch;
 		path = path->next;
 	}
 	path = gl->paths;
-	while (dispatchedAnts < gl->nbAnts)
+	while (dispatched_ants < gl->nbAnts)
 	{
 		if (NULL == path)
 			path = gl->paths;
 		path->antsToDispatch += 1;
-		dispatchedAnts += 1;
+		dispatched_ants += 1;
 		path = path->next;
 	}
 }
@@ -140,22 +141,22 @@ void	define_ants_number_for_each_path(t_global *gl)
 void	dispatch_ants_through_paths(t_global *gl)
 {
 	t_path		*path;
-	t_dispatch	*disTab[gl->nbPaths];
-	int			dispatchedAnts;
-	int			i;	
+	t_dispatch	*dis_tab[gl->nbPaths];
+	int			dispatched_ants;
+	int			i;
 
 	define_ants_number_for_each_path(gl);
 	i = -1;
 	while (++i < gl->nbPaths)
-		disTab[i] = NULL;
+		dis_tab[i] = NULL;
 	path = gl->paths;
-	dispatchedAnts = 0;
+	dispatched_ants = 0;
 	while (1)
 	{
-		move_ants_forward(gl, disTab);
-		dispatch_new_ants_batch(gl, &dispatchedAnts, disTab);
-		if (check_all_ants_have_reached_end(gl, dispatchedAnts, disTab))
+		move_ants_forward(gl, dis_tab, 0);
+		dispatch_new_ants_batch(gl, &dispatched_ants, dis_tab);
+		if (check_all_ants_have_reached_end(gl, dispatched_ants, dis_tab))
 			return ;
-		print_ants_movement(gl, disTab);
+		print_ants_movement(gl, dis_tab);
 	}
 }

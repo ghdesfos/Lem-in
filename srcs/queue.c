@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 08:42:28 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 19:37:59 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:16:41 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void			enqueue(struct s_queue *queue, void *content)
 		return ;
 	if (!(new = (t_node*)malloc(sizeof(t_node))))
 		return ;
-
-	printf("QUEUE NODE %p\n", new);
 	new->content = content;
 	new->next = NULL;
 	if (queue->first == 0)

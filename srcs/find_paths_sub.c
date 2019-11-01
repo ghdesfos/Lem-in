@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:16:47 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 19:47:36 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 15:22:38 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,18 @@ t_pathelem	*create_pathelem_elem(t_entree *curr, t_entree *prev)
 	return (pathElem);
 }
 
-void	find_paths_error_management(t_global *gl)
+void		add_new_path_to_paths_list(t_global *gl, t_path *newPath)
 {
+	t_path *path;
+
 	if (NULL == gl->paths)
+		gl->paths = newPath;
+	else
 	{
-		ft_putstr_fd("ERROR\nthere is no path linking the start and end rooms\n", 2);
-		free_global(gl);
-		exit(-6);
+		path = gl->paths;
+		while (path->next)
+			path = path->next;
+		path->next = newPath;
 	}
 }
 

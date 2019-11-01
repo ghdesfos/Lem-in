@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_paths_sub_sub.c                               :+:      :+:    :+:   */
+/*   find_paths_error_management.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/30 19:47:06 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 19:57:30 by ghdesfos         ###   ########.fr       */
+/*   Created: 2019/10/31 15:16:26 by ghdesfos          #+#    #+#             */
+/*   Updated: 2019/10/31 16:50:05 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem-in.h"
 
-void	free_non_empty_stack(t_stack *stack)
+void	find_paths_error_management(t_global *gl)
 {
-	void *content;
-
-	while ((content = pop_stack(stack)) != NULL)
-		free (content);
-	free(stack);
+	if (NULL == gl->paths)
+	{
+		ft_putstr_fd("ERROR\nthere is no path linking the start \
+and end rooms\n", 2);
+		free_global(gl);
+		exit(-6);
+	}
 }

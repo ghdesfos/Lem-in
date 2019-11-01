@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:56:17 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/23 18:38:25 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:24:56 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@
 
 int		add_room_to_rooms_list(t_global *gl, char **words)
 {
-	t_room	*newRoom;
+	t_room	*new_room;
 
-	if (!(newRoom = (t_room*)malloc(sizeof(t_room))))
+	if (!(new_room = (t_room*)malloc(sizeof(t_room))))
 		return (-1);
-	newRoom->name = ft_strdup(words[0]);
-	newRoom->x = ft_atoi(words[1]);
-	newRoom->y = ft_atoi(words[2]);
-	newRoom->next = gl->rooms;
-	gl->rooms = newRoom;
+	new_room->name = ft_strdup(words[0]);
+	new_room->x = ft_atoi(words[1]);
+	new_room->y = ft_atoi(words[2]);
+	new_room->next = gl->rooms;
+	gl->rooms = new_room;
 	return (1);
 }
 
@@ -38,9 +38,7 @@ int		add_room_to_rooms_list(t_global *gl, char **words)
 **	the check_valid_room() function.
 */
 
-// should we not quit the program when the room is not added to the dict? indeed we know at this point that we are dealing with a well-fomated room line, so if it is not added to the dictionary, it means there was an unexpected issue...
-
-int		add_room_to_dict(t_global *gl, char *line, int roomType)
+int		add_room_to_dict(t_global *gl, char *line, int room_type)
 {
 	t_entree	*ent;
 	char		**words;
@@ -52,14 +50,14 @@ int		add_room_to_dict(t_global *gl, char *line, int roomType)
 		return (0);
 	}
 	if (NULL == (ent = dict_insert(gl->dict, words[0], NULL))
-		||	-1 == add_room_to_rooms_list(gl, words))
+		|| -1 == add_room_to_rooms_list(gl, words))
 	{
 		free_words(words);
 		return (-1);
 	}
-	if (roomType == START_ROOM)
+	if (room_type == START_ROOM)
 		gl->start = ft_strdup(words[0]);
-	else if (roomType == END_ROOM)
+	else if (room_type == END_ROOM)
 		gl->end = ft_strdup(words[0]);
 	ENT_DATA->x = ft_atoi(words[1]);
 	ENT_DATA->y = ft_atoi(words[2]);
@@ -74,19 +72,19 @@ int		add_room_to_dict(t_global *gl, char *line, int roomType)
 */
 
 void	start_line_flag_management(t_global *gl, int fd, char *line, \
-									int *flagStart)
+									int *flag_start)
 {
-	if (*flagStart == 0)
-		(*flagStart)++;
+	if (*flag_start == 0)
+		(*flag_start)++;
 	else
 		read_room_info_error_management(gl, fd, line, START_ROOM_ERR);
 }
 
 void	end_line_flag_management(t_global *gl, int fd, char *line, \
-									int *flagEnd)
+									int *flag_end)
 {
-	if (*flagEnd == 0)
-		(*flagEnd)++;
+	if (*flag_end == 0)
+		(*flag_end)++;
 	else
 		read_room_info_error_management(gl, fd, line, END_ROOM_ERR);
 }

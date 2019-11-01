@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:01:22 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/30 20:06:29 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 17:25:08 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ void	free_global(t_global *gl)
 	free(gl->start);
 	free(gl->end);
 	free_rooms(gl->rooms);
-//	free_dict(gl->dict);
+	free_dict(gl->dict);
 	free_paths(gl->paths);
 }

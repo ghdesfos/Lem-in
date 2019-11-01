@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 09:44:45 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/28 20:22:58 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/10/31 16:49:29 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_rooms(t_room *rooms)
 void	print_entrees(t_entree **entrees)
 {
 	t_entree	*ent;
-	char		*connectedEntreeName;
+	char		*connected_entree_name;
 	int			i;
 
 	if (!entrees)
@@ -39,11 +39,13 @@ void	print_entrees(t_entree **entrees)
 	{
 		b_printf("Key %s --> ", ENT_DATA->key);
 		i = -1;
-		b_printf("NB VALUES %d ADDRESS %p\n", ENT_DATA->nbValues, ENT_DATA->values);
+		b_printf("NB VALUES %d ADDRESS %p\n", ENT_DATA->nbValues, \
+												ENT_DATA->values);
 		while (++i < ENT_DATA->nbValues)
 		{
-			connectedEntreeName = ((t_keyvalue*)(((ENT_DATA->values)[i])->data))->key;
-			b_printf("value: %s, ", connectedEntreeName);
+			connected_entree_name = ((t_keyvalue*)(((ENT_DATA->values)[i])\
+														->data))->key;
+			b_printf("value: %s, ", connected_entree_name);
 		}
 		ent = ent->next;
 	}
