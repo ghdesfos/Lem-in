@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:59 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 18:36:12 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/01 19:09:23 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	add_non_visited_neighbors(t_entree *ent, t_queue *queue, \
 									int *new_visited)
 {
-	t_pathelem	*new_path_elem;
+	t_pathelem	*new_pathelem;
 	int			i;
 
 	i = -1;
@@ -23,8 +23,8 @@ void	add_non_visited_neighbors(t_entree *ent, t_queue *queue, \
 	{
 		if (new_visited[ENT_CH_DATA(i)->vertex_nb] == 0)
 		{
-			new_path_elem = create_pathelem_elem((ENT_DATA->values)[i], ent);
-			enqueue(queue, (void*)new_path_elem);
+			new_pathelem = create_pathelem_node((ENT_DATA->values)[i], ent);
+			enqueue(queue, (void*)new_pathelem);
 			new_visited[ENT_CH_DATA(i)->vertex_nb] = 1;
 		}
 	}
@@ -51,7 +51,7 @@ t_path	*reconstitute_path(t_stack *stack, t_entree *start)
 	t_pathelem	*pathelem;
 	t_entree	*prev;
 
-	if (!(path = create_path_elem()))
+	if (!(path = create_path_node()))
 		return (NULL);
 	pathelem = (t_pathelem*)pop_stack(stack);
 	while (pathelem->curr != start)
@@ -66,7 +66,7 @@ t_path	*reconstitute_path(t_stack *stack, t_entree *start)
 		}
 	}
 	free(pathelem);
-	free(stack);
+	free_non_empty_stack(stack);
 	return (path);
 }
 
@@ -88,7 +88,7 @@ t_path	*find_specific_path(t_global *gl, int *visited, t_entree *start, \
 	i = -1;
 	while (++i < gl->nb_rooms)
 		new_visited[i] = visited[i];
-	enqueue(queue, (void*)create_pathelem_elem(start, NULL));
+	enqueue(queue, (void*)create_pathelem_node(start, NULL));
 	while (!is_empty_queue(queue))
 	{
 		pathelem = (t_pathelem*)dequeue(queue);
@@ -97,7 +97,7 @@ t_path	*find_specific_path(t_global *gl, int *visited, t_entree *start, \
 			break ;
 		add_non_visited_neighbors(pathelem->curr, queue, new_visited);
 	}
-	free(queue);
+	free_non_empty_queue(queue);
 	if (pathelem->curr == end)
 		return (reconstitute_path(stack, start));
 	free_non_empty_stack(stack);
@@ -122,11 +122,6 @@ void	find_paths(t_global *gl)
 	{
 		mark_new_path_rooms_as_visited(gl, new_path, visited);
 		add_new_path_to_paths_list(gl, new_path);
-		gl->nb_paths += 1;
-		if (0 == gl->min_path_len || new_path->len < gl->min_path_len)
-			gl->min_path_len = new_path->len;
-		if (new_path->len > gl->max_path_len)
-			gl->max_path_len = new_path->len;
 	}
 	find_paths_error_management(gl);
 }

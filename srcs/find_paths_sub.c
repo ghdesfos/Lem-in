@@ -6,13 +6,13 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:16:47 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 18:37:33 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/01 18:47:34 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_path		*create_path_elem(void)
+t_path		*create_path_node(void)
 {
 	t_path *path;
 
@@ -26,7 +26,7 @@ t_path		*create_path_elem(void)
 	return (path);
 }
 
-t_pathelem	*create_pathelem_elem(t_entree *curr, t_entree *prev)
+t_pathelem	*create_pathelem_node(t_entree *curr, t_entree *prev)
 {
 	t_pathelem	*pathelem;
 
@@ -50,6 +50,11 @@ void		add_new_path_to_paths_list(t_global *gl, t_path *new_path)
 			path = path->next;
 		path->next = new_path;
 	}
+	gl->nb_paths += 1;
+	if (0 == gl->min_path_len || new_path->len < gl->min_path_len)
+		gl->min_path_len = new_path->len;
+	if (new_path->len > gl->max_path_len)
+		gl->max_path_len = new_path->len;
 }
 
 /*
@@ -75,7 +80,7 @@ void		mark_new_path_rooms_as_visited(t_global *gl, t_path *new_path, \
 }
 
 /*
-**	The variable maxNbAnts will contain the max value of ants that \
+**	The variable max_nb_ants will contain the max value of ants that \
 **	the already accepted paths can accept before accepting the new path.
 */
 

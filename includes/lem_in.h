@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:57:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 18:19:15 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/01 19:18:28 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,11 @@ typedef struct			s_node
 	void				*content;
 	struct s_node		*next;
 }						t_node;
+
+/*
+**	Structure used to find new pathes.
+**	It represents the link between 2 vertices.
+*/
 
 typedef struct			s_pathelem
 {
@@ -279,8 +284,8 @@ t_path					*find_specific_path(t_global *gl, int *visited, \
 							t_entree *end);
 void					find_paths(t_global *gl);
 
-t_path					*create_path_elem(void);
-t_pathelem				*create_pathelem_elem(t_entree *curr, t_entree *prev);
+t_path					*create_path_node(void);
+t_pathelem				*create_pathelem_node(t_entree *curr, t_entree *prev);
 void					add_new_path_to_paths_list(t_global *gl, \
 													t_path *new_path);
 void					mark_new_path_rooms_as_visited(t_global *gl, \
@@ -314,7 +319,7 @@ int						check_all_ants_have_reached_end(t_global *gl, \
 */
 
 void					free_rooms(t_room *rooms);
-void					free_entree(t_entree *ent);
+void					free_entrees(t_entree *ent);
 void					free_dict(t_dict *dict);
 void					free_paths(t_path *paths);
 void					free_global(t_global *gl);
@@ -328,5 +333,6 @@ char					*ft_strtrim_free(char *str);
 int						add_line_to_struct(t_global *gl, char *line_str);
 void					print_input_file_lines(t_line *lines);
 void					free_non_empty_stack(t_stack *stack);
+void					free_non_empty_queue(t_queue *queue);
 
 #endif

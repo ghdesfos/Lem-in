@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:01:22 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 17:53:03 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/01 19:11:00 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,23 @@ void	free_entree(t_entree *ent)
 
 void	free_dict(t_dict *dict)
 {
-	int i;
+	t_entree	*curr;
+	t_entree	*next;
+	int			i;
 
 	if (!dict)
 		return ;
 	i = -1;
 	while (++i < dict->size)
-		free_entree((dict->entrees)[i]);
+	{
+		curr = (dict->entrees)[i];
+		while (curr)
+		{
+			next = curr->next;
+			free_entree(curr);
+			curr = next;
+		}
+	}
 	free(dict->entrees);
 	free(dict);
 }

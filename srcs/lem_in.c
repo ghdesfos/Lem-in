@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:56:13 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 18:14:54 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/01 19:11:10 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,5 @@ int		main(void)
 	b_printf("\n");
 	dispatch_ants_through_paths(&gl);
 	free_global(&gl);
-
-	while (1);
 	return (0);
 }

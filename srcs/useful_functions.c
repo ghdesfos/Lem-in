@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 13:45:25 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 17:53:25 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/01 19:09:26 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,13 @@ void	free_non_empty_stack(t_stack *stack)
 	while ((content = pop_stack(stack)) != NULL)
 		free(content);
 	free(stack);
+}
+
+void	free_non_empty_queue(t_queue *queue)
+{
+	void *content;
+
+	while ((content = dequeue(queue)) != NULL)
+		free(content);
+	free(queue);
 }

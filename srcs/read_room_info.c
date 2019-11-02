@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:56:17 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 18:19:12 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/01 16:04:33 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ int		add_room_to_dict(t_global *gl, char *line, int room_type)
 		gl->end = ft_strdup(words[0]);
 	ENT_DATA->x = ft_atoi(words[1]);
 	ENT_DATA->y = ft_atoi(words[2]);
-	(gl->nb_rooms)++;
+	gl->nb_rooms += 1;
 	free_words(words);
 	return (1);
 }
 
 /*
-**	If flagStart or flagEnd are different than 0, it means that there has \
-**	always been another start or end room defined, hence the error manag.
+**	If flagStart or flagEnd are different from 0, it means that there has \
+**	already been another start or end room defined, hence the error manag.
 */
 
 void	start_line_flag_management(t_global *gl, int fd, char *line, \
@@ -91,9 +91,9 @@ void	end_line_flag_management(t_global *gl, int fd, char *line, \
 
 /*
 **	The function below is called with the values 0 for flags[0] (flag start) \
-**	and flags[1] (flag 1).
+**	and flags[1] (flag end).
 **	If we have a comment, we just free the line and move on to next line.
-**	When flag start == 1 or flag end == 1, we do ++, in order to not reinter \
+**	When flag start == 1 or flag end == 1, we do ++, in order to not reenter \
 **	these conditions a second time.
 **	When the line is not a valid room, nor a comment, the function returns \
 **	It thus has to be the first line describing a link between rooms.

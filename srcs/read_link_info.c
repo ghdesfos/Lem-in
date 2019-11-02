@@ -6,16 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:58:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 18:05:19 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/01 16:07:51 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-/*
-**	To be a valid link, the line has to contain the name of 2 existing rooms \
-**	separated by a '-'.
-*/
 
 int		check_existing_room_name(t_global *gl, char *room_name_to_check)
 {

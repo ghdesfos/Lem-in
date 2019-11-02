@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 18:17:48 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 18:40:26 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/01 18:41:41 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 **	We move the ants forward along their path (first while loop).
 **	If the first ant (most advanced ant) has reached the end, \
-**	we remove it (second while loop).
+**	we remove it (second if statement).
 */
 
 void	move_ants_forward(t_global *gl, t_dispatch **dis_tab, int i)
@@ -49,7 +49,7 @@ void	move_ants_forward(t_global *gl, t_dispatch **dis_tab, int i)
 
 /*
 **	We try to add one more ant on each path.
-**	Yet we don't do it if we have already sent enough ants on this path.
+**	Yet we don't do it if we have already sent enough ants onto this path.
 */
 
 void	dispatch_new_ants_batch(t_global *gl, int *dispatched_ants, \
@@ -110,7 +110,7 @@ void	print_ants_movement(t_global *gl, t_dispatch **dis_tab)
 
 /*
 **	We first share ants through all paths up to the moment where their length \
-**	and their ants number reached gl->maxPathLen.
+**	+ their ants number reached gl->max_path_len.
 **	Then we dispatch the remaining ants between each path equally.
 */
 
