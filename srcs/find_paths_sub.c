@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:16:47 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/01 18:47:34 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/02 15:56:25 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ void		add_new_path_to_paths_list(t_global *gl, t_path *new_path)
 		path->next = new_path;
 	}
 	gl->nb_paths += 1;
-	if (0 == gl->min_path_len || new_path->len < gl->min_path_len)
-		gl->min_path_len = new_path->len;
 	if (new_path->len > gl->max_path_len)
 		gl->max_path_len = new_path->len;
 }

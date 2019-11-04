@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:53:40 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/01 19:00:48 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/02 16:04:38 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,5 @@ void	read_input(t_global *gl)
 	read_room_info(gl, fd, &line, (int[2]){0, 0});
 	check_read_room_info_results(gl, fd, line);
 	read_link_info(gl, fd, line);
-	check_read_link_info_results(gl, fd);
 	close(fd);
 }

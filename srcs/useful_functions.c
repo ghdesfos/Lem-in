@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 13:45:25 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/01 19:09:26 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/04 11:22:04 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,28 +47,24 @@ int		add_line_to_struct(t_global *gl, char *line_str)
 **	reverse order in the list.
 */
 
+void	print_input_file_lines_rec(t_line *lines)
+{
+	if (!lines)
+		return ;
+	print_input_file_lines_rec(lines->next);
+	b_printf("%s\n", lines->line);
+}
+
 void	print_input_file_lines(t_line *lines)
 {
 	if (!lines)
 		return ;
-	print_input_file_lines(lines->next);
-	b_printf("%s\n", lines->line);
+	print_input_file_lines_rec(lines);
+	b_printf("\n");
 }
 
-void	free_non_empty_stack(t_stack *stack)
+void	print_total_moves(t_global *gl)
 {
-	void *content;
-
-	while ((content = pop_stack(stack)) != NULL)
-		free(content);
-	free(stack);
-}
-
-void	free_non_empty_queue(t_queue *queue)
-{
-	void *content;
-
-	while ((content = dequeue(queue)) != NULL)
-		free(content);
-	free(queue);
+	b_printf("\nTotal number of moves to bring ants to end room %d\n", \
+				gl->dispatch_moves);
 }

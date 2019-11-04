@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 18:17:48 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/01 18:41:41 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/04 11:22:02 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ void	dispatch_ants_through_paths(t_global *gl)
 		dispatch_new_ants_batch(gl, &dispatched_ants, dis_tab);
 		if (check_all_ants_have_reached_end(gl, dispatched_ants, dis_tab))
 			return ;
+		gl->dispatch_moves += 1;
 		print_ants_movement(gl, dis_tab);
 	}
 }

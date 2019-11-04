@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 09:44:45 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/10/31 18:43:10 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/02 17:23:25 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ void	print_entrees(t_entree **entrees)
 												ENT_DATA->values);
 		while (++i < ENT_DATA->nb_values)
 		{
-			connected_entree_name = ((t_keyvalue*)(((ENT_DATA->values)[i])\
-														->data))->key;
+			connected_entree_name = ENT_CH_DATA(i)->key;
 			b_printf("value: %s, ", connected_entree_name);
 		}
 		ent = ent->next;
@@ -79,7 +78,7 @@ void	print_paths(t_path *paths)
 
 	if (!paths)
 		return ;
-	b_printf("\n\nPRINTING OF THE PATHS\n");
+	b_printf("\nPRINTING OF THE PATHS\n");
 	path = paths;
 	count = 0;
 	while (path && ++count)

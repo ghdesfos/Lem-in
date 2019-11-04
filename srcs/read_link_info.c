@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:58:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/01 16:07:51 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/02 16:04:24 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,31 +73,6 @@ to the dictionary\n", STDERR_FILENO);
 	}
 	free_words(words);
 	return (1);
-}
-
-/*
-**	This functions checks that the start and the end rooms are at least \
-**	connected to one link.
-*/
-
-void	check_read_link_info_results(t_global *gl, int fd)
-{
-	if (NULL == dict_search(gl->dict, gl->start))
-	{
-		ft_putstr_fd("ERROR\nthe start room is not connected to at least \
-one room\n", STDERR_FILENO);
-		free_global(gl);
-		close(fd);
-		exit(-5);
-	}
-	if (NULL == dict_search(gl->dict, gl->end))
-	{
-		ft_putstr_fd("ERROR\nthe end room is not connected to at least \
-one room\n", STDERR_FILENO);
-		free_global(gl);
-		close(fd);
-		exit(-5);
-	}
 }
 
 /*

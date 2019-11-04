@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:57:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/01 19:18:28 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/04 12:00:17 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,24 @@
 /*
 **	@param {nbAnts} is the number of ants to bring from the start to \
 **	the end point.
+**	@param {lines} contains the lines from the input file, to be printed \
+**	if there is no error in the input.
 **	@param {start} contains the name of the room where the ants start.
-**	@param {end} contains the name of the roo, where the ants finish.
+**	@param {end} contains the name of the room where the ants finish.
 **	@param {rooms} is the list of rooms that constitute the graph.
 **	@param {dict} contains for each room the list of rooms that are linked \
 **	to it, in other words it contains the edge information of the graph.
+**	@param {nb_paths} contains the number of paths we accepyt for the dispatch.
 **	@param {paths} contains the list of paths we will use to dispatch \
 **	the ants from the start to the end the most rapidly possible.
+**	@param {max_path_len} is used to determine if we accept a new path or not.
+**	@param {dispatch_moves} is the total number of moves to bring all ants \
+**	from start to end.
 */
 
 typedef	struct			s_global
 {
+	unsigned char		options;
 	int					nb_ants;
 	struct s_line		*lines;
 	int					nb_rooms;
@@ -41,10 +48,10 @@ typedef	struct			s_global
 	char				*end;
 	struct s_room		*rooms;
 	struct s_dict		*dict;
-	struct s_path		*paths;
 	int					nb_paths;
-	int					min_path_len;
+	struct s_path		*paths;
 	int					max_path_len;
+	int					dispatch_moves;
 }						t_global;
 
 /*
@@ -76,6 +83,7 @@ typedef struct			s_room
 /*
 **	This dict contains the link information between \
 **	the rooms (edges of the graph).
+**
 **	@param {size} is the number of the dictionary.
 **	@param {entrees} will contain the different dictionary entree lists.
 */
@@ -91,6 +99,18 @@ typedef struct			s_entree
 	void				*data;
 	struct s_entree		*next;
 }						t_entree;
+
+/*
+**	struct to be used as the data of the struct s_entree.
+**
+**	@param {key} corresponds to the room name.
+**	@param {nb_values} correspond to the number of rooms connected \
+**	to this room.
+**	@param {values} contains the addresses of the struct s_entree that \
+**	correspond to the rooms connected to this room.
+**	@param {vertex_nb} correspond to the specific number of this vertex \
+**	(by creation order).
+*/
 
 typedef struct			s_keyvalue
 {
@@ -144,6 +164,13 @@ typedef struct			s_stack
 
 /*
 **	Path structure to store the different pathes found
+**
+**	@param {rooms} contains the rooms in this path.
+**	@param {len} corresponds to the length of the path.
+**	@param {ants_to_dispatch} corresponds to the number of ants \
+**	to send on this path.
+**	@param {dispatched_ants} corresponds to the number of ants already \
+**	sent on this path.
 */
 
 typedef struct			s_path
@@ -159,6 +186,9 @@ typedef struct			s_path
 **	Dispatch structure to store the position of an ant inside a path.
 **	Hence each dispatch node corresponds to the movement of an ant \
 **	through the graph.
+**
+**	@param {ant_nb} is the specific identifier of this ant.
+**	@param {room} points to the room where this ant currently is.
 */
 
 typedef struct			s_dispatch
@@ -188,6 +218,19 @@ typedef struct			s_dispatch
 # define ENT_NB(i)		(&((dict->entrees)[i]))
 
 # define FD				0
+
+/*
+**	Flag n prints the number of moves to bring all ants from start to end.
+**	Flag p prints the pathes that are used for the dispatch.
+**	Flag q makes the program run in quiet mode, only the ants moves \
+**	are printed.
+*/
+
+# define FLAGS			"npq"
+# define FLAG_N			1
+# define FLAG_P			2
+# define FLAG_Q			4
+# define USAGE			"Usage: ./lem-in -npq < input_file\n"
 
 /*
 **	Initialization functions
@@ -232,7 +275,6 @@ int						check_existing_room_name(t_global *gl, \
 													char *room_name_to_check);
 int						check_valid_link(t_global *gl, char **words);
 int						add_link_to_dict(t_global *gl, int fd, char *line);
-void					check_read_link_info_results(t_global *gl, int fd);
 void					read_link_info(t_global *gl, int fd, char *line);
 
 /*
@@ -326,13 +368,19 @@ void					free_global(t_global *gl);
 
 void					free_words(char **words);
 void					free_lines(t_line *lines);
+void					free_non_empty_stack(t_stack *stack);
+void					free_non_empty_queue(t_queue *queue);
 
+void					print_rooms(t_room *rooms);
+void					print_entrees(t_entree **entrees);
+void					print_dict(t_dict *dict);
+void					print_paths(t_path *paths);
 void					print_global(t_global *gl);
 
 char					*ft_strtrim_free(char *str);
 int						add_line_to_struct(t_global *gl, char *line_str);
+void					print_input_file_lines_rec(t_line *lines);
 void					print_input_file_lines(t_line *lines);
-void					free_non_empty_stack(t_stack *stack);
-void					free_non_empty_queue(t_queue *queue);
+void					print_total_moves(t_global *gl);
 
 #endif
