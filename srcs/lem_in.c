@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:56:13 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/04 13:15:43 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/08 18:53:54 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ int		init_gl(t_global *gl)
 	gl->nb_paths = 0;
 	gl->max_path_len = 0;
 	gl->dispatch_moves = 0;
+	gl->maxRoomCoorX = 0;
+	gl->maxRoomCoorY = 0;
+	gl->map = NULL;
 	return (0);
 }
 
 void	read_flags_error_management(t_global *gl, int flag)
 {
-	ft_putstr_fd("Usage: ./lem-in -[npq] < input_file\n", 2);
+	ft_putstr_fd(USAGE, 2);
 	if (flag)
 	{
 		ft_putstr_fd("\n", 2);
@@ -42,6 +45,7 @@ from start to end.\n", 2);
 for the dispatch.\n", 2);
 		ft_putstr_fd("Flag q makes the program run in quiet mode, only \
 the ants moves are printed.\n", 2);
+		ft_putstr_fd("Flag v launches the visualizer.\n", 2);
 	}
 	free_global(gl);
 	exit(-1);
@@ -70,6 +74,8 @@ void	read_flags(t_global *gl, int argc, char **argv)
 				gl->options |= FLAG_P;
 			else if ('q' == argv[i][j])
 				gl->options |= FLAG_Q;
+			else if ('v' == argv[i][j])
+				gl->options |= FLAG_V;
 		}
 	}
 }
@@ -97,6 +103,8 @@ int		main(int argc, char **argv)
 		print_paths(gl.paths);
 	if (FLAG_N & gl.options)
 		print_total_moves(&gl);
+	if (FLAG_V & gl.options)
+		launch_visualizer(&gl);
 	free_global(&gl);
 	return (0);
 }

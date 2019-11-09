@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:56:17 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/02 15:54:17 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/08 14:36:17 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int		add_room_to_dict(t_global *gl, char *line, int room_type)
 	ENT_DATA->y = ft_atoi(words[2]);
 	gl->nb_rooms += 1;
 	free_words(words);
+	update_max_room_coordinates(gl, ent);
 	return (1);
 }
 

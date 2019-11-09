@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   visualizer_utilities.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/25 19:52:29 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/09/25 19:52:36 by ghdesfos         ###   ########.fr       */
+/*   Created: 2019/11/06 16:00:46 by ghdesfos          #+#    #+#             */
+/*   Updated: 2019/11/09 11:47:03 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "lem_in.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-
-# define BUFF_SIZE 4
-
-typedef struct		s_file
+void	update_max_room_coordinates(t_global *gl, t_entree *ent)
 {
-	char			*content;
-	int				fd;
-	struct s_file	*next;
-}					t_file;
-
-int					get_next_line(const int fd, char **line);
-
-#endif
+	if (ENT_DATA->x > gl->maxRoomCoorX)
+		gl->maxRoomCoorX = ENT_DATA->x;
+	if (ENT_DATA->y > gl->maxRoomCoorY)
+		gl->maxRoomCoorY = ENT_DATA->y;
+}

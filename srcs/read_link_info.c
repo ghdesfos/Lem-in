@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:58:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/02 16:04:24 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/08 14:47:59 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,17 @@ int		add_link_to_dict(t_global *gl, int fd, char *line)
 	words = ft_strsplit(line, '-');
 	if (!check_valid_link(gl, words))
 	{
-		ft_putstr_fd("ERROR\nsome links are invalid\n", STDERR_FILENO);
-		free_global(gl);
-		free_words(words);
-		free(line);
 		close(fd);
-		exit(-4);
+		read_link_info_error_management(gl, words, line, 0);
 	}
 	if (NULL == dict_insert(gl->dict, words[0], words[1])
 			|| NULL == dict_insert(gl->dict, words[1], words[0]))
 	{
-		ft_putstr_fd("ERROR\nproblem with the adding of some links \
-to the dictionary\n", STDERR_FILENO);
-		free_global(gl);
-		free_words(words);
-		free(line);
 		close(fd);
-		exit(-4);
+		read_link_info_error_management(gl, words, line, 1);
 	}
+	if (FLAG_V & gl->options)
+		add_link_to_visualizer_map(gl, words);
 	free_words(words);
 	return (1);
 }

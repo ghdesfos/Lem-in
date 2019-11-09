@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 18:17:48 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/04 11:22:02 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/08 19:30:46 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	move_ants_forward(t_global *gl, t_dispatch **dis_tab, int i)
 **	Yet we don't do it if we have already sent enough ants onto this path.
 */
 
+#define CREA_DISP_ELEM	create_dispatch_elem(*dispatched_ants, path, NULL, 0)
+
 void	dispatch_new_ants_batch(t_global *gl, int *dispatched_ants, \
 									t_dispatch **dis_tab)
 {
@@ -69,12 +71,12 @@ void	dispatch_new_ants_batch(t_global *gl, int *dispatched_ants, \
 			*dispatched_ants += 1;
 			tmp = dis_tab[i];
 			if (!tmp)
-				dis_tab[i] = create_dispatch_elem(*dispatched_ants, path);
+				dis_tab[i] = CREA_DISP_ELEM;
 			else
 			{
 				while (tmp->next)
 					tmp = tmp->next;
-				tmp->next = create_dispatch_elem(*dispatched_ants, path);
+				tmp->next = CREA_DISP_ELEM;
 			}
 		}
 		i++;

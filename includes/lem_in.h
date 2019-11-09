@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:57:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/04 12:00:17 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/09 10:48:00 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <ncurses.h>
 # include "libft.h"
 # include "get_next_line.h"
 # include "b_printf.h"
@@ -36,6 +37,9 @@
 **	@param {max_path_len} is used to determine if we accept a new path or not.
 **	@param {dispatch_moves} is the total number of moves to bring all ants \
 **	from start to end.
+**	@param {maxRoomCoorX} contains the max x coordinates of all rooms.
+**	@param {maxRoomCoorY} contains the max y coordinates of all rooms.
+**	@param {map} contains the map to print for the visualizer.
 */
 
 typedef	struct			s_global
@@ -52,6 +56,9 @@ typedef	struct			s_global
 	struct s_path		*paths;
 	int					max_path_len;
 	int					dispatch_moves;
+	int					maxRoomCoorX;
+	int					maxRoomCoorY;
+	struct s_map_elem	**map;
 }						t_global;
 
 /*
@@ -189,14 +196,40 @@ typedef struct			s_path
 **
 **	@param {ant_nb} is the specific identifier of this ant.
 **	@param {room} points to the room where this ant currently is.
+**	@param {prev_room} used for the visualizer to have the ant moved \
+**	from the previous room to the current one.
+**	@param {coor} used for the visualizer to describe the ant \
+**	movement from the previous room to the current one.
+**	@param {delay} is used for the dispatch of the ant to send them \
+**	one by one on each path.
 */
+
+// SUPPRIMER PREV_ROOM?
 
 typedef struct			s_dispatch
 {
 	int					ant_nb;
 	t_room				*room;
+	t_room				*prev_room;
+	int					coor[2];
+	int					delay;
 	struct s_dispatch	*next;
 }						t_dispatch;
+
+/*
+**	This struct is used for the visualizer.
+**	It contains the information of the rooms and pathes to be printed.
+**	
+**	@param {pchar} corresponds to the char to be printed.
+**	@param {flag_path} corresponds to the flag to know if the room or \
+**	path element is used during the dispatch.
+*/
+
+typedef struct			s_map_elem
+{
+	char				pchar;
+	int					flag_path;
+}						t_map_elem;
 
 # define SIZE_DICT		1000
 
@@ -219,18 +252,26 @@ typedef struct			s_dispatch
 
 # define FD				0
 
+# define CHAR_ROOM		'R'
+# define CHAR_HORIZ		'-'
+# define CHAR_VERTI		'|'
+# define CHAR_INTERSECT	'+'
+# define CHAR_ANT		'@'
+
 /*
 **	Flag n prints the number of moves to bring all ants from start to end.
 **	Flag p prints the pathes that are used for the dispatch.
 **	Flag q makes the program run in quiet mode, only the ants moves \
 **	are printed.
+**	Flag v launches the visualizer.
 */
 
-# define FLAGS			"npq"
+# define FLAGS			"npqv"
 # define FLAG_N			1
 # define FLAG_P			2
 # define FLAG_Q			4
-# define USAGE			"Usage: ./lem-in -npq < input_file\n"
+# define FLAG_V			4
+# define USAGE			"Usage: ./lem-in -[npqv] < input_file\n"
 
 /*
 **	Initialization functions
@@ -277,6 +318,10 @@ int						check_valid_link(t_global *gl, char **words);
 int						add_link_to_dict(t_global *gl, int fd, char *line);
 void					read_link_info(t_global *gl, int fd, char *line);
 
+void					read_link_info_error_management(t_global *gl, \
+															char **words, \
+															char *line, \
+															int flag);
 /*
 **	Dictionary functions
 */
@@ -351,10 +396,31 @@ void					print_ants_movement(t_global *gl, t_dispatch **dis_tab);
 void					define_ants_number_for_each_path(t_global *gl);
 void					dispatch_ants_through_paths(t_global *gl);
 
-t_dispatch				*create_dispatch_elem(int ant_nb, t_path *path);
+t_dispatch				*create_dispatch_elem(int ant_nb, t_path *path, \
+												int *coor, int delay);
 int						check_all_ants_have_reached_end(t_global *gl, \
 														int dispatched_ants, \
 														t_dispatch **dis_tab);
+
+/*
+**	Visualizer functions
+*/
+
+void					update_max_room_coordinates(t_global *gl, t_entree *ent);
+
+void					create_visualizer_map_error_management(t_global *gl);
+void					create_visualizer_map(t_global *gl);
+
+void					add_rooms_to_visualizer_map(t_global *gl);
+void					add_link_elements_to_visualizer_map(t_global *gl, \
+											int *coor1, int *coor2);
+void					add_link_to_visualizer_map(t_global *gl, char **words);
+void					apply_specific_path_to_visualizer_map(t_global *gl, \
+																t_room *room);
+void					apply_paths_to_visualizer_map(t_global *gl);
+
+void					print_visualizer_map(t_global *gl);
+void					launch_visualizer(t_global *gl);
 
 /*
 **	Diverse functions

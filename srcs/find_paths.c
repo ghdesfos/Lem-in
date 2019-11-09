@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:59 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/02 15:56:17 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/07 19:17:26 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,6 @@ void	find_paths(t_global *gl)
 		add_new_path_to_paths_list(gl, new_path);
 	}
 	find_paths_error_management(gl);
+	if (FLAG_V & gl->options)
+		apply_paths_to_visualizer_map(gl);
 }

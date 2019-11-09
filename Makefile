@@ -6,14 +6,14 @@
 #    By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/25 17:57:10 by ghdesfos          #+#    #+#              #
-#    Updated: 2019/10/31 18:13:40 by ghdesfos         ###   ########.fr        #
+#    Updated: 2019/11/08 20:28:23 by ghdesfos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= lem-in
 
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -lncurses
 RM			= /bin/rm -rf
 LIBFT		= libft/libft.a
 LIBFTPRINTF	= b_printf/libftprintf.a
@@ -33,12 +33,17 @@ READ_INPUT	= read_input.c\
 				read_ants_number.c\
 				read_room_info.c\
 				read_room_info_error_management.c\
-				read_link_info.c
+				read_link_info.c\
+				read_link_info_error_management.c
 FIND_PATH	= find_paths.c\
 				find_paths_sub.c\
 				find_paths_error_management.c
 DISPATCH	= dispatch_ants_through_paths.c\
 				dispatch_ants_through_paths_sub.c
+VISUALIZER	= visualizer.c\
+				visualizer_map_creation.c\
+				visualizer_map_creation_sub.c\
+				visualizer_utilities.c
 DIVERSE		= basic_check_functions.c\
 				the_free_functions.c\
 				the_free_functions_2.c\
@@ -46,7 +51,7 @@ DIVERSE		= basic_check_functions.c\
 				useful_functions.c
 GET_NEXT_L	= get_next_line/get_next_line.c
 
-FUNCTIONS	= $(MAIN) $(DICTIONARY) $(QUEUE) $(STACK) $(READ_INPUT) $(FIND_PATH) $(DISPATCH) $(DIVERSE) $(GET_NEXT_L) $(B_PRINTF)
+FUNCTIONS	= $(MAIN) $(DICTIONARY) $(QUEUE) $(STACK) $(READ_INPUT) $(FIND_PATH) $(DISPATCH) $(VISUALIZER) $(DIVERSE) $(GET_NEXT_L)
 FILES		= $(addprefix srcs/, $(FUNCTIONS))
 OBJECTS		= $(FILES:.o=.c)
 

@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:53:40 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/02 16:04:38 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/08 20:32:23 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ void	read_input(t_global *gl)
 	read_ants_number(gl, fd);
 	read_room_info(gl, fd, &line, (int[2]){0, 0});
 	check_read_room_info_results(gl, fd, line);
+	if (FLAG_V & gl->options)
+	{
+		create_visualizer_map(gl);
+		add_rooms_to_visualizer_map(gl);
+	}
 	read_link_info(gl, fd, line);
 	close(fd);
 }

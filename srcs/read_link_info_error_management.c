@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_paths_error_management.c                      :+:      :+:    :+:   */
+/*   read_link_info_error_management.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/31 15:16:26 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/07 19:06:24 by ghdesfos         ###   ########.fr       */
+/*   Created: 2019/11/07 15:17:16 by ghdesfos          #+#    #+#             */
+/*   Updated: 2019/11/07 15:38:45 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	find_paths_error_management(t_global *gl)
+void	read_link_info_error_management(t_global *gl, char **words, \
+											char *line, int flag)
 {
-	if (NULL == gl->paths)
+	if (0 == flag)
 	{
-		ft_putstr_fd("ERROR\nthere is no path linking the start \
-and end rooms\n", 2);
+		ft_putstr_fd("ERROR\nsome links are invalid\n", STDERR_FILENO);
 		free_global(gl);
-		exit(-6);
+		free_words(words);
+		free(line);
+		exit(-4);
+	}
+	else if (1 == flag)
+	{
+		ft_putstr_fd("ERROR\nproblem with the adding of some links \
+to the dictionary\n", STDERR_FILENO);
+		free_global(gl);
+		free_words(words);
+		free(line);
+		exit(-4);
 	}
 }
