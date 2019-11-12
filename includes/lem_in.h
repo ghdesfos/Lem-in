@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:57:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/09 10:48:00 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/11 22:59:12 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ typedef	struct			s_global
 	struct s_path		*paths;
 	int					max_path_len;
 	int					dispatch_moves;
-	int					maxRoomCoorX;
-	int					maxRoomCoorY;
+	int					max_room_coor_x;
+	int					max_room_coor_y;
 	struct s_map_elem	**map;
 }						t_global;
 
@@ -204,13 +204,10 @@ typedef struct			s_path
 **	one by one on each path.
 */
 
-// SUPPRIMER PREV_ROOM?
-
 typedef struct			s_dispatch
 {
 	int					ant_nb;
 	t_room				*room;
-	t_room				*prev_room;
 	int					coor[2];
 	int					delay;
 	struct s_dispatch	*next;
@@ -219,7 +216,7 @@ typedef struct			s_dispatch
 /*
 **	This struct is used for the visualizer.
 **	It contains the information of the rooms and pathes to be printed.
-**	
+**
 **	@param {pchar} corresponds to the char to be printed.
 **	@param {flag_path} corresponds to the flag to know if the room or \
 **	path element is used during the dispatch.
@@ -252,11 +249,36 @@ typedef struct			s_map_elem
 
 # define FD				0
 
+# define CHAR_SOURCE	'S'
+# define CHAR_SINK		'T'
 # define CHAR_ROOM		'R'
 # define CHAR_HORIZ		'-'
 # define CHAR_VERTI		'|'
 # define CHAR_INTERSECT	'+'
 # define CHAR_ANT		'@'
+
+/*
+**	Time needed for an ant to make one step forward in microseconds.
+*/
+
+# define ANT_SPEED		50000
+
+/*
+**	Below we used the macros defined in the <ncurses.h> header.
+*/
+
+# define BLUE			COLOR_CYAN
+# define GREEN			COLOR_GREEN
+# define YELLOW			COLOR_YELLOW
+# define RED			COLOR_RED
+# define WHITE			COLOR_WHITE
+# define BLACK			COLOR_BLACK
+
+# define C_PAIR_BLUE	1
+# define C_PAIR_GREEN	2
+# define C_PAIR_YELLOW	3
+# define C_PAIR_RED		4
+# define C_PAIR_WHITE	5
 
 /*
 **	Flag n prints the number of moves to bring all ants from start to end.
@@ -406,8 +428,6 @@ int						check_all_ants_have_reached_end(t_global *gl, \
 **	Visualizer functions
 */
 
-void					update_max_room_coordinates(t_global *gl, t_entree *ent);
-
 void					create_visualizer_map_error_management(t_global *gl);
 void					create_visualizer_map(t_global *gl);
 
@@ -419,8 +439,37 @@ void					apply_specific_path_to_visualizer_map(t_global *gl, \
 																t_room *room);
 void					apply_paths_to_visualizer_map(t_global *gl);
 
-void					print_visualizer_map(t_global *gl);
+void					move_ants_to_next_room_in_visualizer_sub(\
+															t_dispatch *tmp, \
+															int *change_flag);
+void					move_ants_to_next_room_in_visualizer(t_global *gl, \
+															t_dispatch **ants, \
+															int move_nb);
+void					update_ants_next_room_in_visualizer(t_global *gl, \
+															t_dispatch **ants, \
+															int move_nb);
 void					launch_visualizer(t_global *gl);
+
+void					visualizer_color_error_management(t_global *gl);
+void					set_up_or_end_ncurses_environment(t_global *gl, \
+															int flag);
+void					set_up_ants_for_visualizer(t_global *gl, \
+													t_dispatch **ants);
+
+void					check_window_size_for_visualizer(t_global *gl);
+int						check_all_ants_have_reached_end_visualizer(\
+														t_global *gl, \
+														t_dispatch **ants);
+
+void					print_char_in_color(char c, int color_pair, int bold);
+void					print_visualizer_map(t_global *gl);
+void					print_ants_in_visualizer(t_global *gl, \
+													t_dispatch **ants, \
+													int move_nb);
+
+void					update_max_room_coordinates(t_global *gl, \
+														t_entree *ent);
+void					swap_coordinates(int *coor1, int *coor2);
 
 /*
 **	Diverse functions
@@ -434,8 +483,12 @@ void					free_global(t_global *gl);
 
 void					free_words(char **words);
 void					free_lines(t_line *lines);
+void					free_dispatchs(t_dispatch **dispatchs, int size, \
+										int flag);
 void					free_non_empty_stack(t_stack *stack);
 void					free_non_empty_queue(t_queue *queue);
+
+void					free_visualizer_map(t_global *gl, t_map_elem **map);
 
 void					print_rooms(t_room *rooms);
 void					print_entrees(t_entree **entrees);

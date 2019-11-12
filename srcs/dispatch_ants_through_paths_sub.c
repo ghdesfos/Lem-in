@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 17:24:04 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/08 19:33:54 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/11 12:32:26 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_dispatch	*create_dispatch_elem(int ant_nb, t_path *path, int *coor, \
 		return (NULL);
 	dispatch->ant_nb = ant_nb;
 	dispatch->room = path->rooms;
-	dispatch->prev_room = NULL;
 	if (coor)
 	{
 		dispatch->coor[0] = coor[0];

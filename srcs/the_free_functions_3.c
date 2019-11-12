@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   visualizer_utilities.c                             :+:      :+:    :+:   */
+/*   the_free_functions_3.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/06 16:00:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/11 22:34:42 by ghdesfos         ###   ########.fr       */
+/*   Created: 2019/11/11 20:35:34 by ghdesfos          #+#    #+#             */
+/*   Updated: 2019/11/11 22:35:07 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	update_max_room_coordinates(t_global *gl, t_entree *ent)
+void	free_visualizer_map(t_global *gl, t_map_elem **map)
 {
-	if (ENT_DATA->x > gl->max_room_coor_x)
-		gl->max_room_coor_x = ENT_DATA->x;
-	if (ENT_DATA->y > gl->max_room_coor_y)
-		gl->max_room_coor_y = ENT_DATA->y;
-}
+	int i;
 
-void	swap_coordinates(int *coor1, int *coor2)
-{
-	int tmp;
-
-	tmp = coor1[0];
-	coor1[0] = coor2[0];
-	coor2[0] = tmp;
-	tmp = coor1[1];
-	coor1[1] = coor2[1];
-	coor2[1] = tmp;
+	i = -1;
+	while (++i < gl->max_room_coor_x + 1)
+		free(map[i]);
+	free(map);
 }

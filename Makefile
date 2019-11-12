@@ -6,7 +6,7 @@
 #    By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/25 17:57:10 by ghdesfos          #+#    #+#              #
-#    Updated: 2019/11/08 20:28:23 by ghdesfos         ###   ########.fr        #
+#    Updated: 2019/11/11 22:36:25 by ghdesfos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ INCLUDES	= -I includes\
 				-I libft\
 				-I srcs/get_next_line\
 				-I b_printf
+HEADERS		= includes/lem_in.h
 
 MAIN		= lem_in.c
 DICTIONARY	= dictionary.c\
@@ -43,10 +44,14 @@ DISPATCH	= dispatch_ants_through_paths.c\
 VISUALIZER	= visualizer.c\
 				visualizer_map_creation.c\
 				visualizer_map_creation_sub.c\
+				visualizer_setup_functions.c\
+				visualizer_check_functions.c\
+				visualizer_print_functions.c\
 				visualizer_utilities.c
 DIVERSE		= basic_check_functions.c\
 				the_free_functions.c\
 				the_free_functions_2.c\
+				the_free_functions_3.c\
 				print_functions.c\
 				useful_functions.c
 GET_NEXT_L	= get_next_line/get_next_line.c
@@ -66,13 +71,13 @@ $(LIBFT):
 $(LIBFTPRINTF):
 	@make -C b_printf
 
-$(NAME): $(LIBFT) $(LIBFTPRINTF) $(OBJECTS)
+$(NAME): $(LIBFT) $(LIBFTPRINTF) $(OBJECTS) $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB)
 
-g: $(LIBFT) $(LIBFTPRINTF) $(OBJECTS)
+g: $(LIBFT) $(LIBFTPRINTF) $(OBJECTS) $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB) -g
 
-gg: $(LIBFT) $(LIBFTPRINTF) $(OBJECTS)
+gg: $(LIBFT) $(LIBFTPRINTF) $(OBJECTS) $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB) -g -fsanitize=address
 
 val:
@@ -94,4 +99,4 @@ re: fclean all
 	make re -C libft
 	make re -C b_printf
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re g gg val

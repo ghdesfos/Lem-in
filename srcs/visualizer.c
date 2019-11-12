@@ -6,96 +6,11 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:31:12 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/09 11:44:18 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/11 22:57:50 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-/*
-struct ant_movement
-{
-	current_room
-	next_room
-	current position
-	reached
-	int color_ant
-	next ant_movement
-}
-*/
-
-//	on ajoute un ant movement a la fin de chaque dispatch
-//	
-//	on pourrait creer une chain list de toutes les ants a distribuer dans le graph avec un retardateur
-
-//	on pourrait creer un tableau du genre: ant_movement *moves[gl->nbPaths]
-//	on stockerait dedans tourtes les ants
-
-void	print_visualizer_map(t_global *gl)
-{
-	int i;
-	int j;
-
-	i = -1;
-	while (++i < gl->maxRoomCoorX + 1)
-	{
-		j = -1;
-		while (++j < gl->maxRoomCoorY + 1)
-		{
-			printw("%c", (gl->map)[i][j]);
-		}
-		printw("\n");
-	}
-}
-
-void	print_ants_in_visualizer(t_global *gl, t_dispatch **ants, int move_nb)
-{
-	t_dispatch	*tmp;
-	int			path_nb;
-
-	path_nb = -1;
-	while (++path_nb < gl->nb_paths)
-	{
-		tmp = ants[path_nb];
-		while (tmp)
-		{
-			if (tmp->delay - move_nb > 0)
-				break ;
-		//	move(tmp->coor[1], tmp->coor[0]);
-			move(tmp->coor[0], tmp->coor[1]);
-			printw("%c", CHAR_ANT);
-			tmp = tmp->next;
-		}
-	}
-	refresh();
-}
-
-void	set_up_ants_for_visualizer(t_global *gl, t_dispatch **ants)
-{
-	t_entree	*ent;
-	t_path		*path;
-	t_dispatch	*new;
-	int			path_nb;
-	int			i;
-
-	if (!(ent = dict_search(gl->dict, gl->start)))
-		return ;
-	path = gl->paths;
-	path_nb = 0;
-	while (path)
-	{
-		i = path->ants_to_dispatch;
-		while (--i >= 0)
-		{
-			new = create_dispatch_elem(0, path, \
-										(int[2]){ENT_DATA->x, ENT_DATA->y}, i);
-			new->next = ants[path_nb];
-			ants[path_nb] = new;
-		}
-		path_nb += 1;
-		path = path->next;
-	}
-}
 
 /*
 **	We do a "break ;" when tmp->delay - move_nb > 0 because all following \
@@ -103,10 +18,36 @@ void	set_up_ants_for_visualizer(t_global *gl, t_dispatch **ants)
 **	during their creation.
 **	The variable change_flag helps us know if all ants have reached their next \
 **	room yet.
+**
+**	In the subfunction, we want to print the path starting at the leftest room \
+**	drawing first an horizontal line and then the vertical line.
+**	This way, it will be coherent to the way we drawed the paths \
+**	in the functions:
+**	- add_link_elements_to_visualizer_map()
+**	- apply_specific_path_to_visualizer_map()
 */
 
 #define COOR_X	(tmp->coor[0])
 #define COOR_Y	(tmp->coor[1])
+
+void	move_ants_to_next_room_in_visualizer_sub(t_dispatch *tmp, \
+													int *change_flag)
+{
+	if (COOR_Y < tmp->room->y)
+	{
+		if (COOR_Y != tmp->room->y && (*change_flag = 1) == 1)
+			(COOR_Y < tmp->room->y) ? COOR_Y++ : COOR_Y--;
+		else if (COOR_X != tmp->room->x && (*change_flag = 1) == 1)
+			(COOR_X < tmp->room->x) ? COOR_X++ : COOR_X--;
+	}
+	else
+	{
+		if (COOR_X != tmp->room->x && (*change_flag = 1) == 1)
+			(COOR_X < tmp->room->x) ? COOR_X++ : COOR_X--;
+		else if (COOR_Y != tmp->room->y && (*change_flag = 1) == 1)
+			(COOR_Y < tmp->room->y) ? COOR_Y++ : COOR_Y--;
+	}
+}
 
 void	move_ants_to_next_room_in_visualizer(t_global *gl, t_dispatch **ants, \
 											int move_nb)
@@ -127,24 +68,14 @@ void	move_ants_to_next_room_in_visualizer(t_global *gl, t_dispatch **ants, \
 			tmp = ants[path_nb];
 			while (tmp)
 			{
-				// QUE SE PASSE_T_IL SI ROOM == NULL
+				if (tmp->delay - move_nb > 0)
+					break ;
 				if (tmp->room)
-				{
-					if (tmp->delay - move_nb > 0)
-						break ;
-					if (COOR_X != tmp->room->x && (change_flag = 1) == 1)
-						(COOR_X < tmp->room->x) ? COOR_X++ : COOR_X--;
-					else if (COOR_Y != tmp->room->y && (change_flag = 1) == 1)
-						(COOR_Y < tmp->room->y) ? COOR_Y++ : COOR_Y--;
-				}
+					move_ants_to_next_room_in_visualizer_sub(tmp, &change_flag);
 				tmp = tmp->next;
 			}
 		}
-
-		//	while (1);
 		print_ants_in_visualizer(gl, ants, move_nb);
-		refresh();
-		usleep(50000);
 	}
 }
 
@@ -163,7 +94,7 @@ void	update_ants_next_room_in_visualizer(t_global *gl, t_dispatch **ants, \
 			if (tmp->delay - move_nb <= 0 && tmp->room)
 				tmp->room = tmp->room->next;
 			tmp = tmp->next;
-		}		
+		}
 	}
 }
 
@@ -173,23 +104,21 @@ void	launch_visualizer(t_global *gl)
 	int			i;
 	int			move_nb;
 
-	// CHECK if the window is big enough for the visualizer
-	// DO IT PERHAPS BEFORE BEFORE THE MALLOC OF THE MAP???
+	check_window_size_for_visualizer(gl);
 	i = -1;
 	while (++i < gl->nb_paths)
-		ants[i] = NULL;	
+		ants[i] = NULL;
+	set_up_or_end_ncurses_environment(gl, 0);
 	set_up_ants_for_visualizer(gl, ants);
-	initscr();
-	curs_set(0);
 	move_nb = 0;
 	while (1)
 	{
 		move_ants_to_next_room_in_visualizer(gl, ants, move_nb);
+		if (check_all_ants_have_reached_end_visualizer(gl, ants))
+			break ;
 		update_ants_next_room_in_visualizer(gl, ants, move_nb);
-	//	if (check_all_ants_have_reached_end_visualizer(gl, ants))
-	//		break ;
 		move_nb++;
 	}
-	endwin();
-	//	FREE
+	set_up_or_end_ncurses_environment(gl, 1);
+	free_dispatchs(ants, gl->nb_paths, 0);
 }

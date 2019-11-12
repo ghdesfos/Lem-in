@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:39:42 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/09 11:56:59 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/11 21:42:04 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,24 @@ void	create_visualizer_map(t_global *gl)
 {
 	int i;
 	int j;
-	int maxX;
-	int maxY;
+	int max_x;
+	int max_y;
 
-	maxX = gl->maxRoomCoorX;
-	maxY = gl->maxRoomCoorY;
-	if (!(gl->map = (t_map_elem**)malloc(sizeof(t_map_elem*) * (maxX + 2))))
+	max_x = gl->max_room_coor_x;
+	max_y = gl->max_room_coor_y;
+	if (!(gl->map = (t_map_elem**)malloc(sizeof(t_map_elem*) * (max_x + 2))))
 		create_visualizer_map_error_management(gl);
 	i = -1;
-	while (++i < gl->maxRoomCoorX + 1)
+	while (++i < max_x + 1)
 		if (!((gl->map)[i] = (t_map_elem*)malloc(sizeof(t_map_elem) \
-													* (maxY + 1))))
+													* (max_y + 1))))
 			create_visualizer_map_error_management(gl);
-	(gl->map)[maxX + 1] = NULL;
+	(gl->map)[max_x + 1] = NULL;
 	i = -1;
-	while (++i < gl->maxRoomCoorX + 1)
+	while (++i < max_x + 1)
 	{
 		j = -1;
-		while (++j < gl->maxRoomCoorY + 1)
+		while (++j < max_y + 1)
 		{
 			gl->map[i][j].pchar = ' ';
 			gl->map[i][j].flag_path = 0;

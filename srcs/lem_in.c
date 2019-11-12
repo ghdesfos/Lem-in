@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:56:13 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/08 18:53:54 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/11 22:33:51 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int		init_gl(t_global *gl)
 	gl->nb_paths = 0;
 	gl->max_path_len = 0;
 	gl->dispatch_moves = 0;
-	gl->maxRoomCoorX = 0;
-	gl->maxRoomCoorY = 0;
+	gl->max_room_coor_x = 0;
+	gl->max_room_coor_y = 0;
 	gl->map = NULL;
 	return (0);
 }

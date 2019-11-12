@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:03:21 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/04 10:42:25 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/11 12:38:41 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,17 @@ void	free_lines(t_line *lines)
 		free(tmp);
 		tmp = next;
 	}
+}
+
+void	free_dispatchs(t_dispatch **dispatchs, int size, int flag)
+{
+	int i;
+
+	i = -1;
+	while (++i < size)
+		free(dispatchs[i]);
+	if (flag)
+		free(dispatchs);
 }
 
 void	free_non_empty_stack(t_stack *stack)
