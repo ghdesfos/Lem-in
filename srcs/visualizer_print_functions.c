@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 20:30:28 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/11 22:39:19 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/12 18:07:16 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@ void	print_visualizer_map(t_global *gl)
 		}
 		printw("\n");
 	}
+}
+
+void	print_dispatch_information(t_global *gl)
+{
+	move(gl->max_room_coor_x + 1, 0);
+	printw("\nAnts Arrived: %d    Steps: %d\n", gl->visualizer_ants_arrived, \
+													gl->visualizer_moves);
+	refresh();
+	usleep(TIME_BTW_MOVES);
 }
 
 void	print_ants_in_visualizer(t_global *gl, t_dispatch **ants, int move_nb)

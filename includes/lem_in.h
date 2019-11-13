@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:57:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/11 22:59:12 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/12 21:37:14 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@
 **	@param {maxRoomCoorX} contains the max x coordinates of all rooms.
 **	@param {maxRoomCoorY} contains the max y coordinates of all rooms.
 **	@param {map} contains the map to print for the visualizer.
+**	@param {visualizer_moves} is the number of moves done since the launch \
+**	of the visualizer.
+**	@param {visualizer_ants_arrived} is the number of ants that arrived \
+**	to the sink since the launch of the visualizer.
 */
 
 typedef	struct			s_global
@@ -59,6 +63,8 @@ typedef	struct			s_global
 	int					max_room_coor_x;
 	int					max_room_coor_y;
 	struct s_map_elem	**map;
+	int					visualizer_moves;
+	int					visualizer_ants_arrived;
 }						t_global;
 
 /*
@@ -258,10 +264,16 @@ typedef struct			s_map_elem
 # define CHAR_ANT		'@'
 
 /*
-**	Time needed for an ant to make one step forward in microseconds.
+**	{ANT_SPEED} Time needed for an ant to make one step forward \
+**	in microseconds.
+**	Then {TIME_BTW_MOVES} time in microseconds between 2 moves.
+**	Then {TIME_CLOSE_VIS} time in seconds before the closing of \
+**	the visualizer after the end of the dispatch.
 */
 
 # define ANT_SPEED		50000
+# define TIME_BTW_MOVES	10000
+# define TIME_CLOSE_VIS	12
 
 /*
 **	Below we used the macros defined in the <ncurses.h> header.
@@ -292,7 +304,7 @@ typedef struct			s_map_elem
 # define FLAG_N			1
 # define FLAG_P			2
 # define FLAG_Q			4
-# define FLAG_V			4
+# define FLAG_V			8
 # define USAGE			"Usage: ./lem-in -[npqv] < input_file\n"
 
 /*
@@ -451,8 +463,8 @@ void					update_ants_next_room_in_visualizer(t_global *gl, \
 void					launch_visualizer(t_global *gl);
 
 void					visualizer_color_error_management(t_global *gl);
-void					set_up_or_end_ncurses_environment(t_global *gl, \
-															int flag);
+void					set_up_ncurses_environment(t_global *gl);
+void					end_ncurses_environment(t_global *gl);
 void					set_up_ants_for_visualizer(t_global *gl, \
 													t_dispatch **ants);
 
@@ -463,6 +475,7 @@ int						check_all_ants_have_reached_end_visualizer(\
 
 void					print_char_in_color(char c, int color_pair, int bold);
 void					print_visualizer_map(t_global *gl);
+void					print_dispatch_information(t_global *gl);
 void					print_ants_in_visualizer(t_global *gl, \
 													t_dispatch **ants, \
 													int move_nb);

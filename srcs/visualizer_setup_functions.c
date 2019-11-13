@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 22:10:15 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/11 22:40:00 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/12 21:34:07 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,33 +26,34 @@ what is necessary for the visualizer...\n", STDERR_FILENO);
 	exit(-12);
 }
 
-void	set_up_or_end_ncurses_environment(t_global *gl, int flag)
+void	set_up_ncurses_environment(t_global *gl)
 {
-	if (0 == flag)
-	{
-		initscr();
-		curs_set(0);
-		start_color();
-		if (!can_change_color())
-			visualizer_color_error_management(gl);
-		init_pair(C_PAIR_BLUE, BLUE, BLACK);
-		init_pair(C_PAIR_BLUE, BLUE, BLACK);
-		init_pair(C_PAIR_GREEN, GREEN, BLACK);
-		init_pair(C_PAIR_YELLOW, YELLOW, BLACK);
-		init_pair(C_PAIR_RED, RED, BLACK);
-		init_pair(C_PAIR_WHITE, WHITE, BLACK);
-	}
-	else
-	{
-		attron(COLOR_PAIR(C_PAIR_GREEN));
-		printw("All ants have reached the sink! Thanks for watching!\n");
-		printw("All ants mean %d ants, and they took a total of \
+	initscr();
+	curs_set(0);
+	start_color();
+	if (!can_change_color())
+		visualizer_color_error_management(gl);
+	init_pair(C_PAIR_BLUE, BLUE, BLACK);
+	init_pair(C_PAIR_BLUE, BLUE, BLACK);
+	init_pair(C_PAIR_GREEN, GREEN, BLACK);
+	init_pair(C_PAIR_YELLOW, YELLOW, BLACK);
+	init_pair(C_PAIR_RED, RED, BLACK);
+	init_pair(C_PAIR_WHITE, WHITE, BLACK);
+}
+
+void	end_ncurses_environment(t_global *gl)
+{
+	print_dispatch_information(gl);
+	attron(COLOR_PAIR(C_PAIR_GREEN));
+	printw("\nAll ants have reached the sink! Thanks for watching!\n");
+	attroff(COLOR_PAIR(C_PAIR_GREEN));
+	attron(COLOR_PAIR(C_PAIR_YELLOW));
+	printw("All ants mean %d ants, and they took a total of \
 %d moves to reach the sink... :)", gl->nb_ants, gl->dispatch_moves);
-		attroff(COLOR_PAIR(C_PAIR_GREEN));
-		refresh();
-		sleep(10);
-		endwin();
-	}
+	attroff(COLOR_PAIR(C_PAIR_YELLOW));
+	refresh();
+	sleep(TIME_CLOSE_VIS);
+	endwin();
 }
 
 void	set_up_ants_for_visualizer(t_global *gl, t_dispatch **ants)

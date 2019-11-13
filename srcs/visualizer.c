@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:31:12 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/11 22:57:50 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/12 21:34:10 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,11 @@ void	update_ants_next_room_in_visualizer(t_global *gl, t_dispatch **ants, \
 		while (tmp)
 		{
 			if (tmp->delay - move_nb <= 0 && tmp->room)
+			{
 				tmp->room = tmp->room->next;
+				if (NULL == tmp->room)
+					gl->visualizer_ants_arrived += 1;
+			}
 			tmp = tmp->next;
 		}
 	}
@@ -108,17 +112,19 @@ void	launch_visualizer(t_global *gl)
 	i = -1;
 	while (++i < gl->nb_paths)
 		ants[i] = NULL;
-	set_up_or_end_ncurses_environment(gl, 0);
+	set_up_ncurses_environment(gl);
 	set_up_ants_for_visualizer(gl, ants);
 	move_nb = 0;
 	while (1)
 	{
+		print_dispatch_information(gl);
 		move_ants_to_next_room_in_visualizer(gl, ants, move_nb);
 		if (check_all_ants_have_reached_end_visualizer(gl, ants))
 			break ;
 		update_ants_next_room_in_visualizer(gl, ants, move_nb);
+		gl->visualizer_moves += 1;
 		move_nb++;
 	}
-	set_up_or_end_ncurses_environment(gl, 1);
+	end_ncurses_environment(gl);
 	free_dispatchs(ants, gl->nb_paths, 0);
 }

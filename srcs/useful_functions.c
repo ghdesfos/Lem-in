@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 13:45:25 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/04 11:22:04 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/12 21:32:46 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,6 @@ void	print_input_file_lines(t_line *lines)
 
 void	print_total_moves(t_global *gl)
 {
-	b_printf("\nTotal number of moves to bring ants to end room %d\n", \
-				gl->dispatch_moves);
+	b_printf("\nTotal number of moves to bring the %d ants to the sink: %d\n", \
+				gl->nb_ants, gl->dispatch_moves);
 }
