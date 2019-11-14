@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 13:25:55 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/11 21:45:29 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 13:33:14 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	add_rooms_to_visualizer_map(t_global *gl)
 
 /*
 **	We want to draw the path starting from the leftest room, and then \
-**	draw first horizontally and then vertically the path.
+**	draw it first horizontally and then vertically.
 **	Hence we invert the coordinates if we're not in the case we want.
 **	--> same comment, as for the functions:
 **	- move_ants_to_next_room_in_visualizer()
@@ -92,13 +92,11 @@ void	add_link_to_visualizer_map(t_global *gl, char **words)
 
 /*
 **	We want to draw the path starting from the leftest room, and then \
-**	draw first horizontally and then vertically the path.
-**	Hence we invert the coordinates if we're not in the case we want.
+**	draw it first horizontally and then vertically.
+**	Hence we use 2 if statements to do the trick.
 **	--> same comment, as for the functions:
 **	- add_link_elements_to_visualizer_map()
 **	- move_ants_to_next_room_in_visualizer()
-**
-**	Hence the ifs conditions below.
 */
 
 void	apply_specific_path_to_visualizer_map(t_global *gl, t_room *room)

@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:03:21 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/11 12:38:41 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 17:28:31 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,21 @@ void	free_lines(t_line *lines)
 
 void	free_dispatchs(t_dispatch **dispatchs, int size, int flag)
 {
-	int i;
+	t_dispatch	*tmp;
+	t_dispatch	*next;
+	int			i;
 
 	i = -1;
 	while (++i < size)
-		free(dispatchs[i]);
+	{
+		tmp = dispatchs[i];
+		while (tmp)
+		{
+			next = tmp->next;
+			free(tmp);
+			tmp = next;
+		}
+	}
 	if (flag)
 		free(dispatchs);
 }

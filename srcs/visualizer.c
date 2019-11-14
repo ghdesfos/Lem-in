@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:31:12 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/12 21:34:10 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 17:12:17 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 **	We do a "break ;" when tmp->delay - move_nb > 0 because all following \
-**	t_dispatch element are in the same case, due to how they were orderered \
+**	t_dispatch elements are in the same case, due to how they were orderered \
 **	during their creation.
 **	The variable change_flag helps us know if all ants have reached their next \
 **	room yet.

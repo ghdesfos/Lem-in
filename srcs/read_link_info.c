@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:58:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/08 14:47:59 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 13:24:58 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		check_existing_room_name(t_global *gl, char *room_name_to_check)
 }
 
 /*
-**	The function checks if we have 2 'words' that were separated by a '-'.
+**	The function checks if we have 2 'words' that are separated by a '-'.
 **	It checks if both correspond to valid room names.
 **	It also checks that both names are different.
 */

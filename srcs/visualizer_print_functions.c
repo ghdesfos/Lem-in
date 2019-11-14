@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 20:30:28 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/12 18:07:16 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 17:50:07 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,25 @@ void	print_dispatch_information(t_global *gl)
 	move(gl->max_room_coor_x + 1, 0);
 	printw("\nAnts Arrived: %d    Steps: %d\n", gl->visualizer_ants_arrived, \
 													gl->visualizer_moves);
+	attron(A_BOLD);
+	attron(COLOR_PAIR(C_PAIR_BLUE));
+	printw("\nS  -->  source of the graph (start room)\n");
+	attroff(COLOR_PAIR(C_PAIR_BLUE));
+	attron(COLOR_PAIR(C_PAIR_GREEN));
+	printw("T  -->  sink of the graph (end room)\n");
+	attroff(COLOR_PAIR(C_PAIR_GREEN));
+	attron(COLOR_PAIR(C_PAIR_WHITE));
+	printw("R  -->  other used rooms of the graph\n");
+	attroff(COLOR_PAIR(C_PAIR_WHITE));
+	attroff(A_BOLD);
+	attron(COLOR_PAIR(C_PAIR_WHITE));
+	printw("R  -->  other non-used rooms of the graph\n");
+	attroff(COLOR_PAIR(C_PAIR_WHITE));
+	attron(A_BOLD);
+	attron(COLOR_PAIR(C_PAIR_WHITE));
+	printw("@  -->  ants (odd number yellow, even red)\n");
+	attroff(COLOR_PAIR(C_PAIR_WHITE));
+	attroff(A_BOLD);
 	refresh();
 	usleep(TIME_BTW_MOVES);
 }

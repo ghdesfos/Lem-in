@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 09:08:03 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/07 15:17:56 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 13:28:24 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 **	We check if the line has 3 "words", the first one is a string that \
 **	does not start with COMMENT_CHAR or SOLUTION_CHAR, and that the second \
-**	and the third one correspond to positive int.
+**	and the third ones correspond to positive int.
 */
 
 int		check_valid_room(char **words)

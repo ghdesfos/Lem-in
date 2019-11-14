@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 08:56:17 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/09 14:54:14 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 13:27:46 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int		add_room_to_rooms_list(t_global *gl, char **words)
 }
 
 /*
-**	The function returns 0, when the line did not contain the information \
-**	necessary to construct a room.
+**	The function returns 0, when the line did not contain the necessary \
+**	information to construct a room.
 **	The return of ft_strsplit (success of the malloc) is checked inside \
 **	the check_valid_room() function.
 */
@@ -96,8 +96,8 @@ void	end_line_flag_management(t_global *gl, int fd, char *line, \
 **	If we have a comment, we just free the line and move on to next line.
 **	When flag start == 1 or flag end == 1, we do ++, in order to not reenter \
 **	these conditions a second time.
-**	When the line is not a valid room, nor a comment, the function returns \
-**	It thus has to be the first line describing a link between rooms.
+**	When the line is not a valid room, nor a comment, the function returns: \
+**	it has indeed to be the first line describing a link between rooms.
 **	The value of this first non-room line is stored in char **line.
 */
 

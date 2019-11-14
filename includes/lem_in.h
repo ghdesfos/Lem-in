@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 11:57:46 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/12 21:37:14 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 17:52:31 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,18 @@
 # include "b_printf.h"
 
 /*
+**	@param {options} contains the options pushed to the program via the flags.
 **	@param {nbAnts} is the number of ants to bring from the start to \
 **	the end point.
 **	@param {lines} contains the lines from the input file, to be printed \
 **	if there is no error in the input.
+**	@param {nb_rooms} is the total number of rooms from the input file.
 **	@param {start} contains the name of the room where the ants start.
 **	@param {end} contains the name of the room where the ants finish.
 **	@param {rooms} is the list of rooms that constitute the graph.
 **	@param {dict} contains for each room the list of rooms that are linked \
 **	to it, in other words it contains the edge information of the graph.
-**	@param {nb_paths} contains the number of paths we accepyt for the dispatch.
+**	@param {nb_paths} contains the number of paths we accept for the dispatch.
 **	@param {paths} contains the list of paths we will use to dispatch \
 **	the ants from the start to the end the most rapidly possible.
 **	@param {max_path_len} is used to determine if we accept a new path or not.
@@ -68,8 +70,8 @@ typedef	struct			s_global
 }						t_global;
 
 /*
-**	This struct will contain the lines from the file read.
-**	We will print these lines and thus the input text if there was no error \
+**	This struct contains the lines from the file read.
+**	We print these lines and thus the input text if there is no error \
 **	in the input.
 */
 
@@ -97,7 +99,7 @@ typedef struct			s_room
 **	This dict contains the link information between \
 **	the rooms (edges of the graph).
 **
-**	@param {size} is the number of the dictionary.
+**	@param {size} is the size/capacity of the dictionary.
 **	@param {entrees} will contain the different dictionary entree lists.
 */
 
@@ -136,7 +138,7 @@ typedef struct			s_keyvalue
 }						t_keyvalue;
 
 /*
-**	Node structure used for the queue and the stack
+**	Node structure used for the queue and the stack.
 */
 
 typedef struct			s_node
@@ -157,7 +159,7 @@ typedef struct			s_pathelem
 }						t_pathelem;
 
 /*
-**	Queue structure
+**	Queue structure.
 */
 
 typedef struct			s_queue
@@ -167,7 +169,7 @@ typedef struct			s_queue
 }						t_queue;
 
 /*
-**	Stack structure
+**	Stack structure.
 */
 
 typedef struct			s_stack
@@ -176,7 +178,7 @@ typedef struct			s_stack
 }						t_stack;
 
 /*
-**	Path structure to store the different pathes found
+**	Path structure to store the different pathes found.
 **
 **	@param {rooms} contains the rooms in this path.
 **	@param {len} corresponds to the length of the path.
@@ -202,12 +204,10 @@ typedef struct			s_path
 **
 **	@param {ant_nb} is the specific identifier of this ant.
 **	@param {room} points to the room where this ant currently is.
-**	@param {prev_room} used for the visualizer to have the ant moved \
-**	from the previous room to the current one.
 **	@param {coor} used for the visualizer to describe the ant \
 **	movement from the previous room to the current one.
-**	@param {delay} is used for the dispatch of the ant to send them \
-**	one by one on each path.
+**	@param {delay} is used for the dispatch of the ant in the visualizer \
+**	to send them one by one on each path.
 */
 
 typedef struct			s_dispatch
@@ -220,7 +220,7 @@ typedef struct			s_dispatch
 }						t_dispatch;
 
 /*
-**	This struct is used for the visualizer.
+**	This struct is used for the printing of the visualizer map.
 **	It contains the information of the rooms and pathes to be printed.
 **
 **	@param {pchar} corresponds to the char to be printed.
@@ -264,15 +264,15 @@ typedef struct			s_map_elem
 # define CHAR_ANT		'@'
 
 /*
-**	{ANT_SPEED} Time needed for an ant to make one step forward \
+**	{ANT_SPEED} time needed for an ant to make one step forward \
 **	in microseconds.
-**	Then {TIME_BTW_MOVES} time in microseconds between 2 moves.
+**	{TIME_BTW_MOVES} time in microseconds between 2 moves.
 **	Then {TIME_CLOSE_VIS} time in seconds before the closing of \
 **	the visualizer after the end of the dispatch.
 */
 
-# define ANT_SPEED		50000
-# define TIME_BTW_MOVES	10000
+# define ANT_SPEED		40000
+# define TIME_BTW_MOVES	5000
 # define TIME_CLOSE_VIS	12
 
 /*

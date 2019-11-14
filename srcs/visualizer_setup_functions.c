@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 22:10:15 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/12 21:34:07 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 17:24:58 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	end_ncurses_environment(t_global *gl)
 	attroff(COLOR_PAIR(C_PAIR_GREEN));
 	attron(COLOR_PAIR(C_PAIR_YELLOW));
 	printw("All ants mean %d ants, and they took a total of \
-%d moves to reach the sink... :)", gl->nb_ants, gl->dispatch_moves);
+%d moves to reach the sink, using %d path(s)... :)", \
+				gl->nb_ants, gl->dispatch_moves, gl->nb_paths);
 	attroff(COLOR_PAIR(C_PAIR_YELLOW));
 	refresh();
 	sleep(TIME_CLOSE_VIS);

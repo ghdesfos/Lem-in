@@ -6,7 +6,7 @@
 /*   By: ghdesfos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 13:45:25 by ghdesfos          #+#    #+#             */
-/*   Updated: 2019/11/12 21:32:46 by ghdesfos         ###   ########.fr       */
+/*   Updated: 2019/11/13 13:29:40 by ghdesfos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		add_line_to_struct(t_global *gl, char *line_str)
 /*
 **	With the below function we print the lines (corresponding to the content \
 **	of the input file) contained inside the struct s_line list.
-**	We print them in the reverse order friom the list as they are saved in \
+**	We print them in the reverse order from the list as they are saved in \
 **	reverse order in the list.
 */
 
