@@ -8,7 +8,7 @@ Run with `./lem-in < Filename`.
 
 A collection of sample ant farms is included in the `maps/` folder.
 
-Run `./lem-in -v < maps/map2.c` for an example.
+Visualizer example: run `./lem-in -v < maps/map2.c`.
 
 ## Map generator
 
