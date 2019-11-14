@@ -1,16 +1,22 @@
 # lem-in
-This program takes a graph (rooms with un-directed connections) and computes an efficient way to move N ants from source node to sink node. It also outputs an animated movement of the ants
+This program takes a graph (rooms with un-directed connections) and computes an efficient way to move N ants from source node to sink node. It also outputs an animated movement of the ants (flag -v).
 
 ## Usage
 Run `make`. An executable will compile. Currently only tested on OS X.
 
 Run with `./lem-in < Filename`.
-A collection of sample ant farms is included in `maps/` folder.
+
+A collection of sample ant farms is included in the `maps/` folder.
+
+Run `./lem-in -v < maps/map2.c` for an example.
+
+## Map generator
 
 You can also use the included map generator `./generator --big | time ./lem-in`.
+
 See `./generator --help` for details on the generator.
 
-### Flags
+## Flags
 | Command | Description |
 | ------ | ------ |
 | --help | Usage |
