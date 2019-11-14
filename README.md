@@ -10,6 +10,8 @@ A collection of sample ant farms is included in the `maps/` folder.
 
 Visualizer example - run `./lem-in -v < maps/map2.c`
 
+<img width="412" alt="Lem-in_visualizer_example" src="https://user-images.githubusercontent.com/45909746/68823049-7a265a80-0647-11ea-830f-a2bd2d0c168a.png">
+
 ## Map generator
 
 You can also use the included map generator `./generator --big | time ./lem-in`.
