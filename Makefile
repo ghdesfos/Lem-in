@@ -13,7 +13,8 @@
 NAME		= lem-in
 
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -lncurses
+CFLAGS		= -Wall -Wextra -Werror
+NCURSES		= -lncurses
 RM			= /bin/rm -rf
 LIBFT		= libft/libft.a
 LIBFTPRINTF	= b_printf/libftprintf.a
@@ -58,13 +59,12 @@ GET_NEXT_L	= get_next_line/get_next_line.c
 
 FUNCTIONS	= $(MAIN) $(DICTIONARY) $(QUEUE) $(STACK) $(READ_INPUT) $(FIND_PATH) $(DISPATCH) $(VISUALIZER) $(DIVERSE) $(GET_NEXT_L)
 FILES		= $(addprefix srcs/, $(FUNCTIONS))
-OBJECTS		= $(FILES:.o=.c)
+OBJECTS		= $(FILES:.c=.o)
 
 all: $(NAME)
 
 %.o: %.c
 	@printf "Creating object file: %s\n" $@
-	@echo 'test'
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT):
@@ -75,7 +75,7 @@ $(LIBFTPRINTF):
 
 $(NAME): $(LIBFT) $(LIBFTPRINTF) $(OBJECTS) $(HEADERS)
 	@printf "Linking into executable: $@\n" $@
-	@$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB)
+	@$(CC) $(CFLAGS) $(NCURSES) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB)
 
 g: $(LIBFT) $(LIBFTPRINTF) $(OBJECTS) $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB) -g
@@ -90,7 +90,7 @@ clean:
 	@printf "Cleaning executable and libraries\n"
 	@make clean -C libft
 	@make clean -C b_printf
-	@$(RM) $(OBJS)
+	@$(RM) $(OBJECTS)
 	@$(RM) *.gch
 	@$(RM) *.dSYM
 
