@@ -63,6 +63,8 @@ OBJECTS		= $(FILES:.o=.c)
 all: $(NAME)
 
 %.o: %.c
+	@printf "Creating object file: %s\n" $@
+	@echo 'test'
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT):
@@ -72,7 +74,8 @@ $(LIBFTPRINTF):
 	@make -C b_printf
 
 $(NAME): $(LIBFT) $(LIBFTPRINTF) $(OBJECTS) $(HEADERS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB)
+	@printf "Linking into executable: $@\n" $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB)
 
 g: $(LIBFT) $(LIBFTPRINTF) $(OBJECTS) $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJECTS) $(LIB) -g
@@ -84,19 +87,18 @@ val:
 	valgrind --leak-check=full -v ./$(NAME)
 
 clean:
-	make clean -C libft
-	make clean -C b_printf
-	$(RM) $(OBJS)
-	$(RM) *.gch
-	$(RM) *.dSYM
+	@printf "Cleaning executable and libraries\n"
+	@make clean -C libft
+	@make clean -C b_printf
+	@$(RM) $(OBJS)
+	@$(RM) *.gch
+	@$(RM) *.dSYM
 
 fclean: clean
-	make fclean -C libft
-	make fclean -C b_printf
-	$(RM) $(NAME)
+	@make fclean -C libft
+	@make fclean -C b_printf
+	@$(RM) $(NAME)
 
 re: fclean all
-	make re -C libft
-	make re -C b_printf
 
 .PHONY: all clean fclean re g gg val

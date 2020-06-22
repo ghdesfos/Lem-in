@@ -18,15 +18,16 @@ INCL = libft.h
 all: $(NAME)
 
 $(NAME):
-	gcc $(FLAGS) -c $(SRC) -I $(INCL)
-	ar rc $(NAME)  *.o
-	ranlib $(NAME)
+	@printf "Creating library: %s\n" $@
+	@gcc $(FLAGS) -c $(SRC) -I $(INCL)
+	@ar rc $(NAME)  *.o
+	@ranlib $(NAME)
 
 clean:
-	/bin/rm -f *.o
-	/bin/rm -f *.gch
+	@/bin/rm -f *.o
+	@/bin/rm -f *.gch
 
 fclean: clean
-	/bin/rm -rf $(NAME)
+	@/bin/rm -rf $(NAME)
 
 re: fclean all

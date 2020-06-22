@@ -83,19 +83,20 @@ CFLAGS = -Wall -Wextra -Werror -I.
 all: $(NAME)
 
 $(NAME): $(OBJS) $(HDRS)
-	ar rc $(NAME) $(OBJS)
-	ranlib $(NAME)
+	@printf "Creating library: %s\n" $@
+	@ar rc $(NAME) $(OBJS)
+	@ranlib $(NAME)
 
 $(OBJS): $(SRCS)
-	gcc $(CFLAGS) -c $(SRCS)
+	@gcc $(CFLAGS) -c $(SRCS)
 
 clean:
-	/bin/rm -f $(OBJS)
-	/bin/rm -f *.gch
-	/bin/rm -f a.out
+	@/bin/rm -f $(OBJS)
+	@/bin/rm -f *.gch
+	@/bin/rm -f a.out
 
 fclean: clean
-	/bin/rm -rf $(NAME)
+	@/bin/rm -rf $(NAME)
 
 re: fclean all
 
